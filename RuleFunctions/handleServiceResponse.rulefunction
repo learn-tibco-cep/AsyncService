@@ -1,0 +1,32 @@
+/**
+ * @description invoked by state-machine to record a service response
+ */
+void rulefunction RuleFunctions.handleServiceResponse {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Concepts.Handler handler;
+		Events.ServiceResponse resp;
+	}
+	body {
+		Object logger = Log.getLogger("RuleFunctions.handleServiceResponse");
+		Log.log(logger, "debug", "handler '%s' adds service response '%s'", handler@extId, resp.response);
+		
+		// add response to handler
+		handler.responses[handler.responses@length] = Concepts.Response.Response(
+			null /*extId String */,
+			resp.response /*response String */,
+			resp.receiptTime /*requestTime long */,
+			resp.responseTime /*responseTime long */,
+			System.currentTimeMillis() /*receiptTime long */);
+			
+		if (handler.expectedResponses <= handler.responses@length) {
+			handler.status = "Complete";
+		}
+		
+		// cleanup event
+		Event.consumeEvent(resp);
+		Log.log(logger, "debug", "cleanup service response '%s': %s", resp.correlationId, resp.response);
+	}
+}

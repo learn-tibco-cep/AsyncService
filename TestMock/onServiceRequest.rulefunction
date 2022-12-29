@@ -1,0 +1,35 @@
+/**
+ * @description Mock service to send ServiceResponse messages.
+ */
+void rulefunction TestMock.onServiceRequest {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Events.ServiceRequest req;
+	}
+	body {
+		Object logger = Log.getLogger("TestMock.onServiceRequest");
+		Log.log(logger, "info", "Mock service receives request '%s'", req.correlationId);
+
+		// generate response messages
+		int size = req.expectedResponses;
+		if (size < 1) {
+			size = 1;
+		}
+		long recTm = System.currentTimeMillis();
+		
+		for (int i = 1; i <= size; i++) {
+			Events.ServiceResponse resp = Events.ServiceResponse.ServiceResponse(
+				null /*extId String */,
+				null /*payload String */,
+				req.correlationId /*correlationId String */,
+				String.format("response %d for [%s]", i, req.message) /*response String */,
+				recTm /*receiptTime long */,
+				System.currentTimeMillis() /*responseTime long */);
+
+			Event.sendEvent(resp);
+		}
+		Log.log(logger, "info", "Mock service sent %d responses for '%s'", size, req.correlationId);
+	}
+}

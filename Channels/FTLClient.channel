@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<channel:Channel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:channel="http:///com/tibco/cep/designtime/core/model/service/channel" xmlns:designtime="http:///com/tibco/cep/designtime/core/model/designtime_ontology.ecore" folder="/Channels/" name="FTLClient" description="" GUID="79E5896E-C24C-39A0-38D2-155DC01FF8AF" ownerProjectName="AsyncService">
+  <driver configMethod="REFERENCE" reference="/SharedResources/FTL.ftl" label="FTL" channel="/">
+    <destinations name="clientRequest" description="" GUID="D1E78DA4-5EEE-E258-AF12-DDCF53649EB4" ownerProjectName="AsyncService" eventURI="/Events/ClientRequest" serializerDeserializerClass="com.tibco.cep.driver.ftl.serializer.FTLSerializer" driverConfig="//@driver">
+      <properties>
+        <properties xsi:type="designtime:SimpleProperty" name="AppName" value="default"/>
+        <properties xsi:type="designtime:SimpleProperty" name="EndpointName" value="shared"/>
+        <properties xsi:type="designtime:SimpleProperty" name="InstName" value="default"/>
+        <properties xsi:type="designtime:SimpleProperty" name="Formats" value="ClientRequest"/>
+        <properties xsi:type="designtime:SimpleProperty" name="Match" value="{&quot;_nm_&quot;: &quot;ClientRequest&quot;}"/>
+        <properties xsi:type="designtime:SimpleProperty" name="DurableName" value="ClientRequest"/>
+      </properties>
+    </destinations>
+    <destinations name="clientResponse" description="" GUID="3DA19A67-F41A-8E0D-9188-FAD66964A2BA" ownerProjectName="AsyncService" eventURI="/Events/ClientResponse" serializerDeserializerClass="com.tibco.cep.driver.ftl.serializer.FTLSerializer" driverConfig="//@driver">
+      <properties>
+        <properties xsi:type="designtime:SimpleProperty" name="AppName" value="default"/>
+        <properties xsi:type="designtime:SimpleProperty" name="EndpointName" value="shared"/>
+        <properties xsi:type="designtime:SimpleProperty" name="InstName" value="default"/>
+        <properties xsi:type="designtime:SimpleProperty" name="Formats" value="ClientResponse"/>
+        <properties xsi:type="designtime:SimpleProperty" name="Match" value="{&quot;_nm_&quot;: &quot;ClientResponse&quot;}"/>
+        <properties xsi:type="designtime:SimpleProperty" name="DurableName" value="ClientResponse"/>
+      </properties>
+    </destinations>
+    <driverType xsi:type="channel:DriverTypeInfo" driverTypeName="FTL"/>
+  </driver>
+</channel:Channel>

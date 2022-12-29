@@ -1,0 +1,20 @@
+/**
+ * @description return counts of stats for a specified stat name.
+ */
+long rulefunction Stats.getStatCount {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String name;
+	}
+	body {
+		Object repo = Collections.Map.getMap(Stats.Config.MapId);
+		Object c = Collections.Map.get(Collections.Map.get(repo, Stats.Config.Count), name);
+		if (c == null) {
+			return 0;
+		}
+		long v = c;
+		return v;
+	}
+}

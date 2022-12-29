@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?><element:Concept xmlns:element="http:///com/tibco/cep/designtime/core/model/element" xmlns:xmi="http://www.omg.org/XMI" xmi:version="2.0" folder="/Concepts/" name="Response" description="service response data, embedded inside a Collector concept" GUID="F72C4AD2-C3EB-DE58-B236-6FC2778556F3" ownerProjectName="AsyncService" superConceptPath="" autoStartStateMachine="true">
+    <extendedProperties/>
+    <properties name="response" ownerProjectName="AsyncService"/>
+    <properties name="requestTime" ownerProjectName="AsyncService" type="long"/>
+    <properties name="responseTime" ownerProjectName="AsyncService" type="long"/>
+    <properties name="receiptTime" ownerProjectName="AsyncService" type="long"/>
+</element:Concept>

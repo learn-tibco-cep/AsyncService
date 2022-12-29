@@ -1,0 +1,38 @@
+/**
+ * @description invoked by state machine to update performance stats
+ */
+void rulefunction RuleFunctions.updateStats {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Concepts.Handler handler;
+	}
+	body {
+		Object logger = Log.getLogger("RuleFunctions.updateStats");
+		
+		int printStats = System.getGlobalVariableAsInt("Agent/PrintStats", 0);
+		if (printStats <= 0) {
+			// disabled stats, so skip it
+			return;
+		}
+		
+		Log.log(logger, "info", "Update stats for handler '%s'", handler@extId);
+		Stats.addStat(String.format("%s-HandleElapsed", handler.status), handler.responseTime - handler.receiptTime);
+		Stats.addStat(String.format("%s-ExpectedResponses", handler.status), handler.expectedResponses);
+		
+		if (handler.responses@length > 0) {
+			Log.log(logger, "info", "Update stats of %d service responses for handler '%s'", handler.responses@length, handler@extId);
+			for (int i = 0; i < handler.responses@length; i++) {
+				Stats.addStat("ServiceElapsed", handler.responses[i].responseTime - handler.responses[i].requestTime);
+				Stats.addStat("ServiceEnd2End", handler.responses[i].receiptTime - handler.receiptTime);
+			}
+		}
+		
+		// print out stats at configured stat counts
+		int count = Stats.getStatCount("Complete-HandleElapsed") + Stats.getStatCount("Timeout-HandleElapsed");
+		if (count % printStats == 0) {
+			Stats.printStats();
+		}
+	}
+}

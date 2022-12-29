@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<element:Scorecard xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:element="http:///com/tibco/cep/designtime/core/model/element" folder="/Stats/" name="Config" description="" GUID="5DD56C06-900A-1358-73B3-12BFA167D0E5" ownerProjectName="AsyncService" scorecard="true">
+  <properties name="MapId" ownerProjectName="AsyncService"/>
+  <properties name="Count" ownerProjectName="AsyncService"/>
+  <properties name="MaxValue" ownerProjectName="AsyncService"/>
+  <properties name="MinValue" ownerProjectName="AsyncService"/>
+  <properties name="Value" ownerProjectName="AsyncService"/>
+</element:Scorecard>

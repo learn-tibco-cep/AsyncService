@@ -1,0 +1,20 @@
+/**
+ * @description invoked by state-machine to handle state timeout
+ */
+void rulefunction RuleFunctions.handleServiceTimeout {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Concepts.Handler handler;
+	}
+	body {
+		Object logger = Log.getLogger("RuleFunctions.handleServiceTimeout");
+		Log.log(logger, "info", "Handler '%s' timeout", handler@extId);
+		
+		handler.status = "Timeout";
+		
+		// send error response to client
+		RuleFunctions.sendClientResponse(handler);
+	}
+}

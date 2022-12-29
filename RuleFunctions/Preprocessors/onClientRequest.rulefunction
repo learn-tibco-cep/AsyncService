@@ -1,0 +1,46 @@
+/**
+ * @description upon receipt of client request, create a handler, and send a service request to the mock service.
+ */
+void rulefunction RuleFunctions.Preprocessors.onClientRequest {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Events.ClientRequest evt;
+	}
+	body {
+		Object logger = Log.getLogger("RuleFunctions.Preprocessors.onClientRequest");
+		Log.log(logger, "info", "Received client request: %s", evt.message);
+		
+		// create a new collector to handle new client request
+		String extId = String.format("CR-%d", System.nanoTime());
+		Log.log(logger, "debug", "Create handler '%s'", extId);
+		
+		long maxResp = System.getGlobalVariableAsLong("Agent/MaxResponseCount", 1);
+		Concepts.Handler h = Instance.newInstance("/Concepts/Handler", extId);
+		h.request = evt.message;
+		h.requestTime = evt.requestTime;
+		h.receiptTime = System.currentTimeMillis();
+		if (maxResp > 1) {
+			h.expectedResponses = Math.ceil(Math.random() * maxResp);
+		}
+		if (h.expectedResponses < 1) {
+			h.expectedResponses = 1;
+		}
+
+		// send service request
+		Events.ServiceRequest req = Events.ServiceRequest.ServiceRequest(
+			null /*extId String */,
+			null /*payload String */,
+			h@extId /*correlationId String */,
+			h.request /*message String */,
+			h.receiptTime /*requestTime long */,
+			h.expectedResponses /*expectedResponses long */);
+		Event.sendEvent(req);
+		Log.log(logger, "debug", "Send service request '%s'; expect %d responses", extId, req.expectedResponses);
+		
+		// cleanup event
+		Event.consumeEvent(evt);
+		Log.log(logger, "info", "Cleanup client request: %s", evt.message);
+	}
+}

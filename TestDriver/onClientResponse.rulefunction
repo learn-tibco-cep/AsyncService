@@ -1,0 +1,33 @@
+/**
+ * @description preprocessor function for the test driver to receive client responses
+ */
+void rulefunction TestDriver.onClientResponse {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Events.ClientResponse evt;
+	}
+	body {
+		Object logger = Log.getLogger("TestMock.onClientResponse");
+		Log.log(logger, "info", "Received response for request '%s': %s", evt.message, evt@payload);
+		Log.log(logger, "info", "Elapsed time %d ms; Server time %d ms", 
+			System.currentTimeMillis() - evt.requestTime,
+			evt.responseTime - evt.receiptTime);
+			
+		// update performance stats
+		int printStats = System.getGlobalVariableAsInt("Test/PrintStats", 0);
+		if (printStats <= 0) {
+			// disabled stats, so skip it
+			return;
+		}
+		Stats.addStat(String.format("%s-ServerElapsed", evt.status), evt.responseTime - evt.receiptTime);
+		Stats.addStat(String.format("%s-ClientElapsed", evt.status), System.currentTimeMillis() - evt.requestTime);
+
+		// print out stats at configured stat counts
+		int count = Stats.getStatCount("Complete-ClientElapsed") + Stats.getStatCount("Timeout-ClientElapsed");
+		if (count % printStats == 0) {
+			Stats.printStats();
+		}
+	}
+}

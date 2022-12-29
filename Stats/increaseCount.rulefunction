@@ -1,0 +1,20 @@
+/**
+ * @description thread-safe increment of a stat count
+ */
+void rulefunction Stats.increaseCount {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Object cMap;
+		String name;
+	}
+	body {
+		boolean done = false;
+		while (!done) {
+			Object c = Collections.Map.get(cMap, name);
+			long v = c;  // convert count to long type
+			done = Collections.Map.Concurrent.replaceIfEqualToGivenValue(cMap, name, c, v + 1);
+		}
+	}
+}

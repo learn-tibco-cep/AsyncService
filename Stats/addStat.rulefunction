@@ -1,0 +1,32 @@
+/**
+ * @description 
+ */
+void rulefunction Stats.addStat {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String name;
+		double value;
+	}
+	body {
+		Object logger = Log.getLogger("Stats.addStat");
+		
+		Object repo = Collections.Map.getMap(Stats.Config.MapId);
+		Object c = Collections.Map.get(Collections.Map.get(repo, Stats.Config.Count), name);
+		if (c == null) {
+			// initialize a new stat.  Note: may miss some initial data due to race condition, but ok for stats
+			Log.log(logger, "debug", "Add first entry for stat name '%s'", name);
+			Collections.Map.Concurrent.putIfAbsent(Collections.Map.get(repo, Stats.Config.Count), name, 1L);
+			Collections.Map.Concurrent.putIfAbsent(Collections.Map.get(repo, Stats.Config.Value), name, value);
+			Collections.Map.Concurrent.putIfAbsent(Collections.Map.get(repo, Stats.Config.MaxValue), name, value);
+			Collections.Map.Concurrent.putIfAbsent(Collections.Map.get(repo, Stats.Config.MinValue), name, value);
+		} else {
+			// update existing stat value
+			Stats.increaseCount(Collections.Map.get(repo, Stats.Config.Count), name);
+			Stats.increaseValue(Collections.Map.get(repo, Stats.Config.Value), name, value);
+			Stats.setMaxValue(Collections.Map.get(repo, Stats.Config.MaxValue), name, value);
+			Stats.setMinValue(Collections.Map.get(repo, Stats.Config.MinValue), name, value);
+		}
+	}
+}

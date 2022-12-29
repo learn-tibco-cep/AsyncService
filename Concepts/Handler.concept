@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<element:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:element="http:///com/tibco/cep/designtime/core/model/element" folder="/Concepts/" name="Handler" description="" GUID="6B9F5521-696C-30AD-3BF0-213311C689F8" ownerProjectName="AsyncService" superConceptPath="" autoStartStateMachine="true">
+  <extendedProperties/>
+  <properties name="request" ownerProjectName="AsyncService"/>
+  <properties name="requestTime" ownerProjectName="AsyncService" type="long"/>
+  <properties name="receiptTime" ownerProjectName="AsyncService" type="long"/>
+  <properties name="responseTime" ownerProjectName="AsyncService" type="long"/>
+  <properties name="expectedResponses" ownerProjectName="AsyncService" type="long"/>
+  <properties name="responses" ownerProjectName="AsyncService" type="ContainedConcept" conceptTypePath="/Concepts/Response" array="true"/>
+  <properties name="status" ownerProjectName="AsyncService"/>
+  <stateMachinePaths>/Concepts/HandlerStateMain</stateMachinePaths>
+</element:Concept>

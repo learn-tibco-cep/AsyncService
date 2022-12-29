@@ -1,0 +1,23 @@
+/**
+ * @description 
+ */
+void rulefunction TestDriver.startup {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		
+	}
+	body {
+		Object logger = Log.getLogger("TestDriver.startup");
+		
+		int threads = System.getGlobalVariableAsInt("Test/Publishers", 1);
+		for (int i = 1; i <= threads; i++) {
+			long delay = 3000 + Math.ceil(Math.random() * 1000);
+			String name = String.format("pub-%d", i);
+			Log.log(logger, "info", "Schedule request sender '%s' with %d ms delay", name, delay);
+			TestDriver.RequestTimer.scheduleRequestTimer(
+				delay /*delay long */, name /*closure String */, 0 /*ttl long */);
+		}
+	}
+}

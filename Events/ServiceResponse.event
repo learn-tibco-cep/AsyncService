@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<event:SimpleEvent xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:event="http:///com/tibco/cep/designtime/core/model/event" folder="/Events/" name="ServiceResponse" description="Inbound response for a specified correlation id of a service request." GUID="7B500803-E953-96CE-482A-568DA76B09A0" ownerProjectName="AsyncService" superEventPath="" ttlUnits="Seconds" channelURI="/Channels/FTLService" destinationName="serviceResponse">
+  <properties name="correlationId" ownerProjectName="AsyncService"/>
+  <properties name="response" ownerProjectName="AsyncService"/>
+  <properties name="receiptTime" ownerProjectName="AsyncService" type="long"/>
+  <properties name="responseTime" ownerProjectName="AsyncService" type="long"/>
+  <expiryAction folder="/Events/ServiceResponse" name="ServiceResponse_expiryAction" ownerProjectName="AsyncService" actionText="" conditionText="">
+    <symbols>
+      <symbolList idName="serviceresponse" type="/Events/ServiceResponse"/>
+    </symbols>
+  </expiryAction>
+</event:SimpleEvent>

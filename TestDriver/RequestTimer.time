@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<event:TimeEvent xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:event="http:///com/tibco/cep/designtime/core/model/event" folder="/TestDriver/" name="RequestTimer" description="" GUID="F7413179-D417-4E0B-E5FE-3F20DBADAC6B" ownerProjectName="AsyncService" type="TimeEvent" superEventPath=""/>

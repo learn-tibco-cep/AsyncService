@@ -1,0 +1,48 @@
+/**
+ * @description upon receipt of a service response, get a lock, and fetch its handler, so its state-machine can handle the response.
+ */
+void rulefunction RuleFunctions.Preprocessors.onServiceResponse {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Events.ServiceResponse evt;
+	}
+	body {
+		Object logger = Log.getLogger("RuleFunctions.Preprocessors.onServiceResponse");
+		if (evt.correlationId == null || String.trim(evt.correlationId) == "") {
+			Log.log(logger, "info", "Ignore service response: No correlation ID for response '%s'", evt.response);
+			Event.consumeEvent(evt);
+			return;
+		}
+		
+		// acquire lock on correlation ID
+		long lockWait = System.getGlobalVariableAsLong("Agent/LockWait", 50);
+		int lockRetry = System.getGlobalVariableAsInt("Agent/LockRetry", 3);
+		// when running in-memory agent, call local-only lock
+		boolean lockLocal = System.getGlobalVariableAsBoolean("Agent/LockLocal", true);		
+		boolean locked = RuleFunctions.acquireLock(evt.correlationId, lockWait, lockRetry, lockLocal);
+		if (!locked) {
+			Log.log(logger, "info", "Ignore service response: Failed lock on '%s'", evt.correlationId);
+			Event.consumeEvent(evt);
+			return;
+		}
+		
+		// fetch collector into working memory
+		Concepts.Handler h;
+		if (lockLocal) {
+			// when running in-memory instances, set ResponseEndpoint to `default`, so all instances will process it
+			h = Instance.getByExtIdByUri(evt.correlationId, "/Concepts/Handler");
+		} else {
+			// when running store/cache, set ResponseEndpoint to `shared`, so only one agent will process it
+			h = Cluster.DataGrid.CacheLoadConceptByExtIdByUri(evt.correlationId, true, "/Concepts/Handler");
+		}
+		if (h == null) {
+			// when running multiple in-memory instances, only one instance will have the valid handler
+			Log.log(logger, "info", "Ignore service response: Failed to load handler '%s'", evt.correlationId);
+			Event.consumeEvent(evt);
+			return;
+		}
+		Log.log(logger, "info", "Loaded handler '%s'", h@extId);
+	}
+}

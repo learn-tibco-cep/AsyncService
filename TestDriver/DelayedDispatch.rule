@@ -1,0 +1,25 @@
+/**
+ * @description for each timer event, dispatch a delayed publisher, so client requests are sent in a preprocessor thread.
+ * 
+ * @author Pro-Branes.local
+ */
+rule TestDriver.DelayedDispatch {
+	attribute {
+		priority = 5;
+		forwardChain = true;
+	}
+	declare {
+		TestDriver.RequestTimer tm;
+	}
+	when {
+		
+	}
+	then {
+		Object logger = Log.getLogger("TestDriver.DelayedDispatch");
+		
+		String name = tm@closure;  // thread name
+		TestDriver.Dispatch evt = TestDriver.Dispatch.Dispatch(null, null, name);
+		Event.sendEvent(evt);
+		Log.log(logger, "info", "dispatch publisher '%s'", name);
+	}
+}

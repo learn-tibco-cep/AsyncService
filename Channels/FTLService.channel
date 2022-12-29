@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<channel:Channel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:channel="http:///com/tibco/cep/designtime/core/model/service/channel" xmlns:designtime="http:///com/tibco/cep/designtime/core/model/designtime_ontology.ecore" folder="/Channels/" name="FTLService" description="" GUID="11AC426E-48CB-1BEA-2A6A-334A9DDD5C2E" ownerProjectName="AsyncService">
+  <driver configMethod="REFERENCE" reference="/SharedResources/FTL.ftl" label="FTL" channel="/">
+    <destinations name="serviceRequest" description="" GUID="B29A2AB8-6825-59B1-0B96-8F0D8DC23B82" ownerProjectName="AsyncService" eventURI="/Events/ServiceRequest" serializerDeserializerClass="com.tibco.cep.driver.ftl.serializer.FTLSerializer" driverConfig="//@driver">
+      <properties>
+        <properties xsi:type="designtime:SimpleProperty" name="IncludeEventType" value="ALWAYS" mandatory="true"/>
+        <properties xsi:type="designtime:SimpleProperty" name="be.http.ResponseEvent" value="" mandatory="true"/>
+        <properties xsi:type="designtime:SimpleProperty" name="AppName" value="default"/>
+        <properties xsi:type="designtime:SimpleProperty" name="EndpointName" value="shared"/>
+        <properties xsi:type="designtime:SimpleProperty" name="InstName" value="default"/>
+        <properties xsi:type="designtime:SimpleProperty" name="Formats" value="ServiceRequest"/>
+        <properties xsi:type="designtime:SimpleProperty" name="Match" value="{&quot;_nm_&quot;: &quot;ServiceRequest&quot;}"/>
+        <properties xsi:type="designtime:SimpleProperty" name="DurableName" value="ServiceRequest"/>
+      </properties>
+    </destinations>
+    <destinations name="serviceResponse" description="" GUID="52F5BCC8-C2C9-C58F-6152-F36DADE46328" ownerProjectName="AsyncService" eventURI="/Events/ServiceResponse" serializerDeserializerClass="com.tibco.cep.driver.ftl.serializer.FTLSerializer" driverConfig="//@driver">
+      <properties>
+        <properties xsi:type="designtime:SimpleProperty" name="IncludeEventType" value="ALWAYS" mandatory="true"/>
+        <properties xsi:type="designtime:SimpleProperty" name="be.http.ResponseEvent" value="" mandatory="true"/>
+        <properties xsi:type="designtime:SimpleProperty" name="AppName" value="default"/>
+        <properties xsi:type="designtime:SimpleProperty" name="EndpointName" value="%%FTL/ResponseEndpoint%%"/>
+        <properties xsi:type="designtime:SimpleProperty" name="InstName" value="default"/>
+        <properties xsi:type="designtime:SimpleProperty" name="Formats" value="ServiceResponse"/>
+        <properties xsi:type="designtime:SimpleProperty" name="Match" value="{&quot;_nm_&quot;: &quot;ServiceResponse&quot;}"/>
+        <properties xsi:type="designtime:SimpleProperty" name="DurableName" value="%%FTL/ResponseDurable%%"/>
+      </properties>
+    </destinations>
+    <driverType xsi:type="channel:DriverTypeInfo" driverTypeName="FTL"/>
+  </driver>
+</channel:Channel>

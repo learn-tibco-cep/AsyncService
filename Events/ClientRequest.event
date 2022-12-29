@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<event:SimpleEvent xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:event="http:///com/tibco/cep/designtime/core/model/event" folder="/Events/" name="ClientRequest" description="Inbound client request message" GUID="A9480AD9-4485-F90B-8670-729B9F6117DF" ownerProjectName="AsyncService" superEventPath="" ttlUnits="Seconds" channelURI="/Channels/FTLClient" destinationName="clientRequest">
+  <properties name="message" ownerProjectName="AsyncService" conceptTypePath="/Events/ClientRequest"/>
+  <properties name="requestTime" ownerProjectName="AsyncService" type="long"/>
+  <expiryAction folder="/Events/ClientRequest" name="Demo_expiryAction" ownerProjectName="AsyncService" actionText="" conditionText="">
+    <symbols>
+      <symbolList idName="demo" type="/Events/ClientRequest"/>
+    </symbols>
+  </expiryAction>
+</event:SimpleEvent>

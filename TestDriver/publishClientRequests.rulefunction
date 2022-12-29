@@ -1,0 +1,41 @@
+/**
+ * @description preprocessor of dispatch event, publish configured number of client requests at specified rate.
+ */
+void rulefunction TestDriver.publishClientRequests {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		TestDriver.Dispatch evt;
+	}
+	body {
+		Object logger = Log.getLogger("TestDriver.publishClientRequests");
+		
+		// Note: you may override global var in cdd with prefix tibco.clientVar.Test/RequestCount
+		int c = System.getGlobalVariableAsInt("Test/RequestCount", 1);
+		long v = System.getGlobalVariableAsLong("Test/RequestInterval", 1000);
+		String name = evt.publisher;  // thread name
+		
+		int i = 1;
+		while (c <= 0 || i <= c) {
+			// publish configured number of requests (publish forever if c <= 0)
+			Events.ClientRequest req = Events.ClientRequest.ClientRequest(
+				null /*extId String */,
+				null /*payload String */,
+				String.format("%s-test %d", name, i) /*message String */,
+				System.currentTimeMillis() /*requestTime long */);
+				
+			// send immediate does not work (a bug?)
+		 	// Event.Ext.sendEventImmediate(req);
+			Event.sendEvent(req);
+			Log.log(logger, "info", "[%s] sent client request: '%s'", name, req.message);
+			// complete RTC to push event out immediately
+			// Note: this call is not necessary here, because FTL event are sent immediately
+			// Engine.executeRules();
+			
+			// configured interval between requests
+			i += 1;
+			Engine.sleep(v);
+		}		
+	}
+}

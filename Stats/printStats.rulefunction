@@ -1,0 +1,28 @@
+/**
+ * @description print out all collected stats
+ */
+void rulefunction Stats.printStats {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		
+	}
+	body {
+		Object logger = Log.getLogger("Stats.printStats");
+		
+		Object repo = Collections.Map.getMap(Stats.Config.MapId);
+		Object entries = Collections.Map.entrySet(Collections.Map.get(repo, Stats.Config.Count));
+		
+		Object iter = Collections.iterator(entries);
+		while (Collections.Iterator.hasNext(iter)) {
+			Object entry = Collections.Iterator.next(iter);
+			Object name = Collections.Map.Entry.getKey(entry);
+			long c = Collections.Map.Entry.getValue(entry);
+			double v = Collections.Map.get(Collections.Map.get(repo, Stats.Config.Value), name);
+			double mx = Collections.Map.get(Collections.Map.get(repo, Stats.Config.MaxValue), name);
+			double mn = Collections.Map.get(Collections.Map.get(repo, Stats.Config.MinValue), name);
+			Log.log(logger, "info", "[%s] count: %d, avg: %.3f, max: %.3f, min: %.3f", name, c, v/c, mx, mn);
+		}
+	}
+}

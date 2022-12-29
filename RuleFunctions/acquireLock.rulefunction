@@ -1,0 +1,28 @@
+/**
+ * @description acquire a lock with specified number of retry, gradually increase the lock wait time.
+ */
+boolean rulefunction RuleFunctions.acquireLock {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String lockKey;
+		long lockWait;
+		int maxRetry;
+		boolean localLock;
+	}
+	body {
+		Object logger = Log.getLogger("RuleFunctions.acquireLock");
+		
+		for (int i = 1; i <= maxRetry; i++) {
+			boolean ok = Cluster.DataGrid.Lock(lockKey, lockWait * i, localLock);
+			if (ok) {
+				return ok;
+			} else {
+				Log.log(logger, "debug", "Failed retry %d to acquire lock on %s", i, lockKey);
+			}
+		}
+		Log.log(logger, "error", "Cannot get lock on %s", lockKey);
+		return false;
+	}
+}

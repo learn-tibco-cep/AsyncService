@@ -1,0 +1,24 @@
+/**
+ * @description thread-safe update a stat max value
+ */
+void rulefunction Stats.setMaxValue {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Object cMap;
+		String name;
+		double value;				
+	}
+	body {
+		boolean done = false;
+		while (!done) {
+			Object c = Collections.Map.get(cMap, name);
+			double v = c;  // convert c to double type
+			if (value <= v) {
+				return;
+			}
+			done = Collections.Map.Concurrent.replaceIfEqualToGivenValue(cMap, name, c, value);
+		}
+	}
+}

@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<cluster xmlns="http://tibco.com/businessevents/configuration/6.2">
+    <revision>
+        <version>57</version>
+        <author>yxu</author>
+        <date>2022/12/28 10:41:06</date>
+        <comment/>
+    </revision>
+    <name>Demo</name>
+    <message-encoding>UTF-8</message-encoding>
+    <provider/>
+    <object-management>
+        <memory-manager/>
+        <db-concepts>
+            <db-uris/>
+            <check-interval>60</check-interval>
+            <inactivity-timeout>0</inactivity-timeout>
+            <initial-size>5</initial-size>
+            <max-size>5</max-size>
+            <min-size>5</min-size>
+            <property-check-interval>900</property-check-interval>
+            <retry-count>-1</retry-count>
+            <wait-timeout>1</wait-timeout>
+        </db-concepts>
+    </object-management>
+    <telemetry-config>
+        <service-name>default</service-name>
+        <sampler>always_on</sampler>
+        <traceidratio>1.0</traceidratio>
+        <propagators>tracecontext</propagators>
+        <no-trace-uris/>
+        <span-exporter>
+            <type>none</type>
+        </span-exporter>
+    </telemetry-config>
+    <rulesets>
+        <rules id="all-rules">
+            <uri>/</uri>
+        </rules>
+    </rulesets>
+    <function-groups>
+        <functions id="all-functions">
+            <uri>/</uri>
+        </functions>
+    </function-groups>
+    <destination-groups/>
+    <process-groups/>
+    <log-configs>
+        <log-config id="logConfig">
+            <enabled>true</enabled>
+            <roles>*:info</roles>
+            <files>
+                <enabled>true</enabled>
+                <dir>logs</dir>
+                <name/>
+                <max-number/>
+                <max-size/>
+                <append>false</append>
+            </files>
+            <terminal>
+                <enabled/>
+                <sys-out-redirect>false</sys-out-redirect>
+                <sys-err-redirect>false</sys-err-redirect>
+                <encoding/>
+            </terminal>
+            <line-layout>
+                <enabled>false</enabled>
+                <class/>
+                <arg/>
+            </line-layout>
+        </log-config>
+        <log-config id="testConfig">
+            <enabled>true</enabled>
+            <roles>*:info</roles>
+            <files>
+                <enabled>true</enabled>
+                <dir>logs</dir>
+                <name>test</name>
+                <max-number/>
+                <max-size/>
+                <append>false</append>
+            </files>
+            <terminal>
+                <enabled/>
+                <sys-out-redirect>false</sys-out-redirect>
+                <sys-err-redirect>false</sys-err-redirect>
+                <encoding/>
+            </terminal>
+            <line-layout>
+                <enabled>false</enabled>
+                <class/>
+                <arg/>
+            </line-layout>
+        </log-config>
+        <log-config id="mockConfig">
+            <enabled>true</enabled>
+            <roles>*:info</roles>
+            <files>
+                <enabled>true</enabled>
+                <dir>logs</dir>
+                <name>mock</name>
+                <max-number/>
+                <max-size/>
+                <append>false</append>
+            </files>
+            <terminal>
+                <enabled/>
+                <sys-out-redirect>false</sys-out-redirect>
+                <sys-err-redirect>false</sys-err-redirect>
+                <encoding/>
+            </terminal>
+            <line-layout>
+                <enabled>false</enabled>
+                <class/>
+                <arg/>
+            </line-layout>
+        </log-config>
+    </log-configs>
+    <agent-classes>
+        <inference-agent-class id="inference-class">
+            <rules/>
+            <destinations>
+                <destination id="clientRequest_F839205">
+                    <pre-processor>/RuleFunctions/Preprocessors/onClientRequest</pre-processor>
+                    <queue-size/>
+                    <thread-count/>
+                    <threading-model>shared-queue</threading-model>
+                    <thread-affinity-rule-function/>
+                    <uri>/Channels/FTLClient/clientRequest</uri>
+                </destination>
+                <destination id="serviceResponse_16B18D8D">
+                    <pre-processor>/RuleFunctions/Preprocessors/onServiceResponse</pre-processor>
+                    <queue-size/>
+                    <thread-count/>
+                    <threading-model>shared-queue</threading-model>
+                    <thread-affinity-rule-function/>
+                    <uri>/Channels/FTLService/serviceResponse</uri>
+                </destination>
+            </destinations>
+            <startup>
+                <uri>/Stats/initializeStats</uri>
+            </startup>
+            <shutdown/>
+            <local-cache>
+                <eviction>
+                    <max-size>1024</max-size>
+                    <max-time>900</max-time>
+                </eviction>
+            </local-cache>
+            <shared-queue>
+                <size>1024</size>
+                <workers>10</workers>
+            </shared-queue>
+            <load>
+                <max-active/>
+            </load>
+            <concurrent-rtc>true</concurrent-rtc>
+            <check-for-duplicates>false</check-for-duplicates>
+            <businessworks>
+                <uri/>
+            </businessworks>
+            <property-group/>
+        </inference-agent-class>
+        <inference-agent-class id="test-driver">
+            <rules>
+                <uri>/TestDriver/DelayedDispatch</uri>
+            </rules>
+            <destinations>
+                <destination id="clientResponse_5928288C">
+                    <pre-processor>/TestDriver/onClientResponse</pre-processor>
+                    <queue-size/>
+                    <thread-count/>
+                    <threading-model>shared-queue</threading-model>
+                    <thread-affinity-rule-function/>
+                    <uri>/Channels/FTLClient/clientResponse</uri>
+                </destination>
+                <destination id="dispatch_69F7FF19">
+                    <pre-processor>/TestDriver/publishClientRequests</pre-processor>
+                    <queue-size/>
+                    <thread-count/>
+                    <threading-model>shared-queue</threading-model>
+                    <thread-affinity-rule-function/>
+                    <uri>/TestDriver/Local/dispatch</uri>
+                </destination>
+            </destinations>
+            <startup>
+                <uri>/Stats/initializeStats</uri>
+                <uri>/TestDriver/startup</uri>
+            </startup>
+            <shutdown/>
+            <local-cache>
+                <eviction>
+                    <max-size>1024</max-size>
+                    <max-time>900</max-time>
+                </eviction>
+            </local-cache>
+            <shared-queue>
+                <size>1024</size>
+                <workers>10</workers>
+            </shared-queue>
+            <load>
+                <max-active/>
+            </load>
+            <concurrent-rtc>true</concurrent-rtc>
+            <check-for-duplicates>false</check-for-duplicates>
+            <businessworks>
+                <uri/>
+            </businessworks>
+            <property-group>
+                <property name="be.channel.deactivate" value="/Channels/FTLService"/>
+            </property-group>
+        </inference-agent-class>
+        <inference-agent-class id="mock-service">
+            <rules/>
+            <destinations>
+                <destination id="serviceRequest_77216D39">
+                    <pre-processor>/TestMock/onServiceRequest</pre-processor>
+                    <queue-size/>
+                    <thread-count/>
+                    <threading-model>shared-queue</threading-model>
+                    <thread-affinity-rule-function/>
+                    <uri>/Channels/FTLService/serviceRequest</uri>
+                </destination>
+            </destinations>
+            <startup/>
+            <shutdown/>
+            <local-cache>
+                <eviction>
+                    <max-size>1024</max-size>
+                    <max-time>900</max-time>
+                </eviction>
+            </local-cache>
+            <shared-queue>
+                <size>1024</size>
+                <workers>10</workers>
+            </shared-queue>
+            <load>
+                <max-active/>
+            </load>
+            <concurrent-rtc>true</concurrent-rtc>
+            <check-for-duplicates>false</check-for-duplicates>
+            <businessworks>
+                <uri/>
+            </businessworks>
+            <property-group>
+                <property name="be.channel.deactivate" value="/Channels/FTLClient"/>
+            </property-group>
+        </inference-agent-class>
+    </agent-classes>
+    <processing-units>
+        <processing-unit id="default">
+            <agents>
+                <agent>
+                    <ref>inference-class</ref>
+                    <key/>
+                    <priority/>
+                </agent>
+            </agents>
+            <logs>logConfig</logs>
+            <hot-deploy>false</hot-deploy>
+            <cache-storage-enabled>false</cache-storage-enabled>
+            <db-concepts>false</db-concepts>
+            <property-group>
+                <property name="tibco.clientVar.Agent/PrintStats" value="100"/>
+            </property-group>
+        </processing-unit>
+        <processing-unit id="test">
+            <agents>
+                <agent>
+                    <ref>test-driver</ref>
+                    <key/>
+                    <priority/>
+                </agent>
+            </agents>
+            <logs>testConfig</logs>
+            <hot-deploy>false</hot-deploy>
+            <cache-storage-enabled>false</cache-storage-enabled>
+            <db-concepts>false</db-concepts>
+            <property-group>
+                <property name="tibco.clientVar.Test/RequestCount" value="1001"/>
+                <property name="tibco.clientVar.Test/RequestInterval" value="20"/>
+                <property name="tibco.clientVar.Test/Publishers" value="3"/>
+            </property-group>
+        </processing-unit>
+        <processing-unit id="mock">
+            <agents>
+                <agent>
+                    <ref>mock-service</ref>
+                    <key/>
+                    <priority/>
+                </agent>
+            </agents>
+            <logs>mockConfig</logs>
+            <hot-deploy>false</hot-deploy>
+            <cache-storage-enabled>false</cache-storage-enabled>
+            <db-concepts>false</db-concepts>
+            <property-group/>
+        </processing-unit>
+    </processing-units>
+    <load-balancer-configs>
+        <pair-configs/>
+        <adhoc-configs/>
+    </load-balancer-configs>
+    <property-group>
+        <property-group comment="" name="cluster-level properties">
+            <property-group comment="" name="auth">
+                <property name="be.mm.auth.type" value="file"/>
+                <property name="be.mm.auth.file.location" value="/Users/yxu/tibco/be6/be/6.2/mm/config/users.pwd"/>
+                <property name="java.security.auth.login.config" value="/Users/yxu/tibco/be6/be/6.2/mm/config/jaas-config.config"/>
+            </property-group>
+        </property-group>
+        <property-group comment="" name="auth">
+            <property name="be.mm.auth.type" value="file"/>
+            <property name="be.mm.auth.file.location" value="/Users/yxu/tibco/be6/be/6.2/mm/config/users.pwd"/>
+            <property name="java.security.auth.login.config" value="/Users/yxu/tibco/be6/be/6.2/mm/config/jaas-config.config"/>
+        </property-group>
+    </property-group>
+</cluster>

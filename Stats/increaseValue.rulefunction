@@ -1,0 +1,21 @@
+/**
+ * @description thread-safe increment of a stat total value
+ */
+void rulefunction Stats.increaseValue {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Object cMap;
+		String name;
+		double value;		
+	}
+	body {
+		boolean done = false;
+		while (!done) {
+			Object c = Collections.Map.get(cMap, name);
+			double v = c;  // convert c to double type
+			done = Collections.Map.Concurrent.replaceIfEqualToGivenValue(cMap, name, c, v + value);
+		}		
+	}
+}
