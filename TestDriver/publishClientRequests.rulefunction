@@ -25,13 +25,9 @@ void rulefunction TestDriver.publishClientRequests {
 				String.format("%s-test %d", name, i) /*message String */,
 				System.currentTimeMillis() /*requestTime long */);
 				
-			// send immediate does not work (a bug?)
-		 	// Event.Ext.sendEventImmediate(req);
+			// send request immediately since it is called as event preprocessor
 			Event.sendEvent(req);
 			Log.log(logger, "info", "[%s] sent client request: '%s'", name, req.message);
-			// complete RTC to push event out immediately
-			// Note: this call is not necessary here, because FTL event are sent immediately
-			// Engine.executeRules();
 			
 			// configured interval between requests
 			i += 1;
