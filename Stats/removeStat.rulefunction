@@ -1,0 +1,20 @@
+/**
+ * @description 
+ */
+void rulefunction Stats.removeStat {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String name;
+	}
+	body {
+		Object logger = Log.getLogger("Stats.removeStat");
+		Object repo = Collections.Map.getMap(Stats.Config.MapId);
+		Log.log(logger, "debug", "Cleanup stat name '%s'", name);
+		Collections.Map.remove(Collections.Map.get(repo, Stats.Config.Count), name);
+		Collections.Map.remove(Collections.Map.get(repo, Stats.Config.Value), name);
+		Collections.Map.remove(Collections.Map.get(repo, Stats.Config.MaxValue), name);
+		Collections.Map.remove(Collections.Map.get(repo, Stats.Config.MinValue), name);
+	}
+}
