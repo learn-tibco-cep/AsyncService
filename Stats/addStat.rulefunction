@@ -13,6 +13,9 @@ void rulefunction Stats.addStat {
 		Object logger = Log.getLogger("Stats.addStat");
 		
 		Object repo = Collections.Map.getMap(Stats.Config.MapId);
+		if (repo == null || Collections.Map.get(repo, Stats.Config.Count) == null) {
+			return;
+		}
 		Object c = Collections.Map.get(Collections.Map.get(repo, Stats.Config.Count), name);
 		if (c == null) {
 			// initialize a new stat.  Note: may miss some initial data due to race condition, but ok for stats

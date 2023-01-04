@@ -1,0 +1,605 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<cluster xmlns="http://tibco.com/businessevents/configuration/6.2">
+    <revision>
+        <version>77</version>
+        <author>yxu</author>
+        <date>2023/01/04 12:42:42</date>
+        <comment/>
+    </revision>
+    <name>Demo</name>
+    <message-encoding>UTF-8</message-encoding>
+    <provider>
+        <type>Ignite</type>
+        <class>com.tibco.cep.ignite.cluster.IgniteClusterProvider</class>
+        <properties>
+            <property name="discovery-url" value="127.0.0.1:47500..47510"/>
+            <property name="listen-port" value="47500..47510"/>
+            <property name="communication-port" value="47100..47110"/>
+            <property name="socket-write-timeout" value="30000"/>
+            <property name="connect-timeout" value="30000"/>
+            <property name="join-timeout" value="30000"/>
+            <property name="network-timeout" value="30000"/>
+            <property name="failure-detection-timeout" value="30000"/>
+            <property name="hostaware-enable" value="true"/>
+            <property name="hostaware-hostname" value="localhost"/>
+        </properties>
+        <security enabled="false">
+            <property name="ssl.trusted.certificate.folder.path" value=""/>
+            <property name="ssl.identity.file.path" value=""/>
+            <property name="ssl.trusted.store.password" value=""/>
+        </security>
+    </provider>
+    <object-management>
+        <cache-manager>
+            <type>Ignite</type>
+            <class>com.tibco.cep.ignite.store.IgniteStoreProvider</class>
+            <properties>
+                <property name="cache-agent-quorum" value="1"/>
+                <property name="backup-copies" value="0"/>
+                <property name="listen-port" value="47500..47510"/>
+                <property name="communication-port" value="47100..47110"/>
+                <property name="socket-write-timeout" value="30000"/>
+                <property name="connect-timeout" value="30000"/>
+                <property name="join-timeout" value="30000"/>
+                <property name="network-timeout" value="30000"/>
+                <property name="failure-detection-timeout" value="30000"/>
+                <property name="hostaware-enable" value="true"/>
+                <property name="hostaware-hostname" value="localhost"/>
+                <property name="encryption-enable" value="false"/>
+                <property name="encryption.identity.file.path" value=""/>
+            </properties>
+            <security enabled="false">
+                <property name="ssl.trusted.certificate.folder.path" value=""/>
+                <property name="ssl.identity.file.path" value=""/>
+                <property name="ssl.trusted.store.password" value=""/>
+            </security>
+            <domain-objects>
+                <default-mode>cache</default-mode>
+                <check-for-version>true</check-for-version>
+                <evict-on-update>false</evict-on-update>
+                <cache-limited>false</cache-limited>
+                <subscribe>false</subscribe>
+                <pre-load-enabled>false</pre-load-enabled>
+                <pre-load-fetch-size>0</pre-load-fetch-size>
+                <pre-load-handles>false</pre-load-handles>
+                <concept-ttl>-1</concept-ttl>
+                <entity-cache-size>50</entity-cache-size>
+                <object-table-cache-size>200</object-table-cache-size>
+                <domain-object>
+                    <mode>memory</mode>
+                    <uri>/Stats/Config</uri>
+                    <backing-store>
+                        <enabled>false</enabled>
+                        <table-name/>
+                        <properties>
+                            <property>
+                                <name>MapId</name>
+                            </property>
+                            <property>
+                                <name>Count</name>
+                            </property>
+                            <property>
+                                <name>MaxValue</name>
+                            </property>
+                            <property>
+                                <name>MinValue</name>
+                            </property>
+                            <property>
+                                <name>Value</name>
+                            </property>
+                        </properties>
+                    </backing-store>
+                    <keys>
+                        <key/>
+                    </keys>
+                    <indexes>
+                        <index/>
+                    </indexes>
+                    <encryption/>
+                    <composite-indexes/>
+                </domain-object>
+                <domain-object>
+                    <mode>memory</mode>
+                    <uri>/TestDriver/RequestTimer</uri>
+                    <backing-store>
+                        <enabled>false</enabled>
+                        <table-name/>
+                        <properties/>
+                    </backing-store>
+                    <keys>
+                        <key/>
+                    </keys>
+                    <indexes>
+                        <index/>
+                    </indexes>
+                    <encryption/>
+                    <composite-indexes/>
+                </domain-object>
+                <domain-object>
+                    <mode>memory</mode>
+                    <uri>/TestDriver/Dispatch</uri>
+                    <backing-store>
+                        <enabled>false</enabled>
+                        <table-name/>
+                        <properties>
+                            <property>
+                                <name>publisher</name>
+                            </property>
+                        </properties>
+                    </backing-store>
+                    <keys>
+                        <key/>
+                    </keys>
+                    <indexes>
+                        <index/>
+                    </indexes>
+                    <encryption/>
+                    <composite-indexes/>
+                </domain-object>
+                <domain-object>
+                    <mode>memory</mode>
+                    <uri>/Events/ServiceRequest</uri>
+                    <backing-store>
+                        <enabled>false</enabled>
+                        <table-name/>
+                        <properties>
+                            <property>
+                                <name>correlationId</name>
+                            </property>
+                            <property>
+                                <name>message</name>
+                            </property>
+                            <property>
+                                <name>requestTime</name>
+                            </property>
+                            <property>
+                                <name>expectedResponses</name>
+                            </property>
+                        </properties>
+                    </backing-store>
+                    <keys>
+                        <key/>
+                    </keys>
+                    <indexes>
+                        <index/>
+                    </indexes>
+                    <encryption/>
+                    <composite-indexes/>
+                </domain-object>
+                <domain-object>
+                    <mode>memory</mode>
+                    <uri>/Events/ServiceResponse</uri>
+                    <backing-store>
+                        <enabled>false</enabled>
+                        <table-name/>
+                        <properties>
+                            <property>
+                                <name>correlationId</name>
+                            </property>
+                            <property>
+                                <name>response</name>
+                            </property>
+                            <property>
+                                <name>receiptTime</name>
+                            </property>
+                            <property>
+                                <name>responseTime</name>
+                            </property>
+                        </properties>
+                    </backing-store>
+                    <keys>
+                        <key/>
+                    </keys>
+                    <indexes>
+                        <index/>
+                    </indexes>
+                    <encryption/>
+                    <composite-indexes/>
+                </domain-object>
+                <domain-object>
+                    <mode>memory</mode>
+                    <uri>/Events/ClientRequest</uri>
+                    <backing-store>
+                        <enabled>false</enabled>
+                        <table-name/>
+                        <properties>
+                            <property>
+                                <name>message</name>
+                            </property>
+                            <property>
+                                <name>requestTime</name>
+                            </property>
+                        </properties>
+                    </backing-store>
+                    <keys>
+                        <key/>
+                    </keys>
+                    <indexes>
+                        <index/>
+                    </indexes>
+                    <encryption/>
+                    <composite-indexes/>
+                </domain-object>
+                <domain-object>
+                    <mode>memory</mode>
+                    <uri>/Events/ClientResponse</uri>
+                    <backing-store>
+                        <enabled>false</enabled>
+                        <table-name/>
+                        <properties>
+                            <property>
+                                <name>message</name>
+                            </property>
+                            <property>
+                                <name>requestTime</name>
+                            </property>
+                            <property>
+                                <name>receiptTime</name>
+                            </property>
+                            <property>
+                                <name>responseTime</name>
+                            </property>
+                            <property>
+                                <name>status</name>
+                            </property>
+                        </properties>
+                    </backing-store>
+                    <keys>
+                        <key/>
+                    </keys>
+                    <indexes>
+                        <index/>
+                    </indexes>
+                    <encryption/>
+                    <composite-indexes/>
+                </domain-object>
+            </domain-objects>
+            <backing-store>
+                <persistence-option>None</persistence-option>
+                <type>Oracle</type>
+                <properties>
+                    <property name="strategy" value="JDBC"/>
+                    <property name="persistence-policy" value="ASYNC"/>
+                    <property name="cache-aside" value="true"/>
+                    <property name="enforce-pools" value="true"/>
+                </properties>
+                <primary-connection>
+                    <uri/>
+                    <initial-size>10</initial-size>
+                    <max-size>10</max-size>
+                    <min-size>10</min-size>
+                </primary-connection>
+            </backing-store>
+        </cache-manager>
+        <db-concepts>
+            <db-uris/>
+            <check-interval>60</check-interval>
+            <inactivity-timeout>0</inactivity-timeout>
+            <initial-size>5</initial-size>
+            <max-size>5</max-size>
+            <min-size>5</min-size>
+            <property-check-interval>900</property-check-interval>
+            <retry-count>-1</retry-count>
+            <wait-timeout>1</wait-timeout>
+        </db-concepts>
+    </object-management>
+    <telemetry-config>
+        <service-name>default</service-name>
+        <sampler>always_on</sampler>
+        <traceidratio>1.0</traceidratio>
+        <propagators>tracecontext</propagators>
+        <no-trace-uris/>
+        <span-exporter>
+            <type>none</type>
+        </span-exporter>
+    </telemetry-config>
+    <rulesets>
+        <rules id="all-rules">
+            <uri>/</uri>
+        </rules>
+    </rulesets>
+    <function-groups>
+        <functions id="all-functions">
+            <uri>/</uri>
+        </functions>
+    </function-groups>
+    <destination-groups/>
+    <process-groups/>
+    <log-configs>
+        <log-config id="logConfig">
+            <enabled>true</enabled>
+            <roles>*:info</roles>
+            <files>
+                <enabled>true</enabled>
+                <dir>logs</dir>
+                <name/>
+                <max-number/>
+                <max-size/>
+                <append>false</append>
+            </files>
+            <terminal>
+                <enabled/>
+                <sys-out-redirect>false</sys-out-redirect>
+                <sys-err-redirect>false</sys-err-redirect>
+                <encoding/>
+            </terminal>
+            <line-layout>
+                <enabled>false</enabled>
+                <class/>
+                <arg/>
+            </line-layout>
+        </log-config>
+        <log-config id="testConfig">
+            <enabled>true</enabled>
+            <roles>*:info</roles>
+            <files>
+                <enabled>true</enabled>
+                <dir>logs</dir>
+                <name>test</name>
+                <max-number/>
+                <max-size/>
+                <append>false</append>
+            </files>
+            <terminal>
+                <enabled/>
+                <sys-out-redirect>false</sys-out-redirect>
+                <sys-err-redirect>false</sys-err-redirect>
+                <encoding/>
+            </terminal>
+            <line-layout>
+                <enabled>false</enabled>
+                <class/>
+                <arg/>
+            </line-layout>
+        </log-config>
+        <log-config id="mockConfig">
+            <enabled>true</enabled>
+            <roles>*:info</roles>
+            <files>
+                <enabled>true</enabled>
+                <dir>logs</dir>
+                <name>mock</name>
+                <max-number/>
+                <max-size/>
+                <append>false</append>
+            </files>
+            <terminal>
+                <enabled/>
+                <sys-out-redirect>false</sys-out-redirect>
+                <sys-err-redirect>false</sys-err-redirect>
+                <encoding/>
+            </terminal>
+            <line-layout>
+                <enabled>false</enabled>
+                <class/>
+                <arg/>
+            </line-layout>
+        </log-config>
+    </log-configs>
+    <agent-classes>
+        <inference-agent-class id="inference-class">
+            <rules/>
+            <destinations>
+                <destination id="clientRequest_F839205">
+                    <pre-processor>/RuleFunctions/Preprocessors/onClientRequest</pre-processor>
+                    <queue-size/>
+                    <thread-count/>
+                    <threading-model>shared-queue</threading-model>
+                    <thread-affinity-rule-function/>
+                    <uri>/Channels/FTLClient/clientRequest</uri>
+                </destination>
+                <destination id="serviceResponse_16B18D8D">
+                    <pre-processor>/RuleFunctions/Preprocessors/onServiceResponse</pre-processor>
+                    <queue-size/>
+                    <thread-count/>
+                    <threading-model>shared-queue</threading-model>
+                    <thread-affinity-rule-function/>
+                    <uri>/Channels/FTLService/serviceResponse</uri>
+                </destination>
+            </destinations>
+            <startup>
+                <uri>/Stats/initializeStats</uri>
+            </startup>
+            <shutdown/>
+            <local-cache>
+                <eviction>
+                    <max-size>2048</max-size>
+                    <max-time>900</max-time>
+                </eviction>
+            </local-cache>
+            <shared-queue>
+                <size>2048</size>
+                <workers>24</workers>
+            </shared-queue>
+            <load>
+                <max-active/>
+            </load>
+            <concurrent-rtc>true</concurrent-rtc>
+            <check-for-duplicates>false</check-for-duplicates>
+            <businessworks>
+                <uri/>
+            </businessworks>
+            <property-group>
+                <property name="be.engine.profile.inference-class.enable" value="true"/>
+            </property-group>
+        </inference-agent-class>
+        <inference-agent-class id="test-driver">
+            <rules>
+                <uri>/TestDriver/DelayedDispatch</uri>
+            </rules>
+            <destinations>
+                <destination id="clientResponse_5928288C">
+                    <pre-processor>/TestDriver/onClientResponse</pre-processor>
+                    <queue-size/>
+                    <thread-count/>
+                    <threading-model>shared-queue</threading-model>
+                    <thread-affinity-rule-function/>
+                    <uri>/Channels/FTLClient/clientResponse</uri>
+                </destination>
+                <destination id="dispatch_69F7FF19">
+                    <pre-processor>/TestDriver/publishClientRequests</pre-processor>
+                    <queue-size/>
+                    <thread-count/>
+                    <threading-model>shared-queue</threading-model>
+                    <thread-affinity-rule-function/>
+                    <uri>/TestDriver/Local/dispatch</uri>
+                </destination>
+            </destinations>
+            <startup>
+                <uri>/Stats/initializeStats</uri>
+                <uri>/TestDriver/startup</uri>
+            </startup>
+            <shutdown/>
+            <local-cache>
+                <eviction>
+                    <max-size>1024</max-size>
+                    <max-time>900</max-time>
+                </eviction>
+            </local-cache>
+            <shared-queue>
+                <size>1024</size>
+                <workers>10</workers>
+            </shared-queue>
+            <load>
+                <max-active/>
+            </load>
+            <concurrent-rtc>true</concurrent-rtc>
+            <check-for-duplicates>false</check-for-duplicates>
+            <businessworks>
+                <uri/>
+            </businessworks>
+            <property-group>
+                <property name="be.channel.deactivate" value="/Channels/FTLService"/>
+            </property-group>
+        </inference-agent-class>
+        <inference-agent-class id="mock-service">
+            <rules/>
+            <destinations>
+                <destination id="serviceRequest_77216D39">
+                    <pre-processor>/TestMock/onServiceRequest</pre-processor>
+                    <queue-size/>
+                    <thread-count/>
+                    <threading-model>shared-queue</threading-model>
+                    <thread-affinity-rule-function/>
+                    <uri>/Channels/FTLService/serviceRequest</uri>
+                </destination>
+            </destinations>
+            <startup/>
+            <shutdown/>
+            <local-cache>
+                <eviction>
+                    <max-size>1024</max-size>
+                    <max-time>900</max-time>
+                </eviction>
+            </local-cache>
+            <shared-queue>
+                <size>1024</size>
+                <workers>10</workers>
+            </shared-queue>
+            <load>
+                <max-active/>
+            </load>
+            <concurrent-rtc>true</concurrent-rtc>
+            <check-for-duplicates>false</check-for-duplicates>
+            <businessworks>
+                <uri/>
+            </businessworks>
+            <property-group>
+                <property name="be.channel.deactivate" value="/Channels/FTLClient"/>
+            </property-group>
+        </inference-agent-class>
+        <cache-agent-class id="cache-class">
+            <property-group>
+                <property name="be.engine.cacheServer.channel.disable" value="true"/>
+            </property-group>
+        </cache-agent-class>
+    </agent-classes>
+    <processing-units>
+        <processing-unit id="default">
+            <agents>
+                <agent>
+                    <ref>inference-class</ref>
+                    <key/>
+                    <priority/>
+                </agent>
+            </agents>
+            <logs>logConfig</logs>
+            <hot-deploy>false</hot-deploy>
+            <cache-storage-enabled>false</cache-storage-enabled>
+            <db-concepts>false</db-concepts>
+            <property-group>
+                <property name="tibco.clientVar.Agent/PrintStats" value="100"/>
+                <property name="tibco.clientVar.Agent/LockLocal" value="false"/>
+                <property name="tibco.clientVar.FTL/ResponseEndpoint" value="shared"/>
+                <property name="tibco.clientVar.FTL/ResponseDurable" value="ServiceResponse"/>
+                <property name="tibco.clientVar.Agent/RequestTimeout" value="10000"/>
+            </property-group>
+        </processing-unit>
+        <processing-unit id="test">
+            <agents>
+                <agent>
+                    <ref>test-driver</ref>
+                    <key/>
+                    <priority/>
+                </agent>
+            </agents>
+            <logs>testConfig</logs>
+            <hot-deploy>false</hot-deploy>
+            <cache-storage-enabled>false</cache-storage-enabled>
+            <db-concepts>false</db-concepts>
+            <property-group>
+                <property name="tibco.clientVar.Test/RequestCount" value="1001"/>
+                <property name="tibco.clientVar.Test/RequestInterval" value="50"/>
+                <property name="tibco.clientVar.Test/Publishers" value="3"/>
+            </property-group>
+        </processing-unit>
+        <processing-unit id="mock">
+            <agents>
+                <agent>
+                    <ref>mock-service</ref>
+                    <key/>
+                    <priority/>
+                </agent>
+            </agents>
+            <logs>mockConfig</logs>
+            <hot-deploy>false</hot-deploy>
+            <cache-storage-enabled>false</cache-storage-enabled>
+            <db-concepts>false</db-concepts>
+            <property-group>
+                <property name="tibco.clientVar.FTL/ResponseEndpoint" value="shared"/>
+            </property-group>
+        </processing-unit>
+        <processing-unit id="cache">
+            <agents>
+                <agent>
+                    <ref>cache-class</ref>
+                    <key/>
+                    <priority/>
+                </agent>
+            </agents>
+            <logs>logConfig</logs>
+            <hot-deploy>false</hot-deploy>
+            <cache-storage-enabled>true</cache-storage-enabled>
+            <db-concepts>false</db-concepts>
+            <property-group/>
+        </processing-unit>
+    </processing-units>
+    <load-balancer-configs>
+        <pair-configs/>
+        <adhoc-configs/>
+    </load-balancer-configs>
+    <property-group>
+        <property-group comment="" name="cluster-level properties">
+            <property-group comment="" name="auth">
+                <property name="be.mm.auth.type" value="file"/>
+                <property name="be.mm.auth.file.location" value="/Users/yxu/tibco/be6/be/6.2/mm/config/users.pwd"/>
+                <property name="java.security.auth.login.config" value="/Users/yxu/tibco/be6/be/6.2/mm/config/jaas-config.config"/>
+            </property-group>
+        </property-group>
+        <property-group comment="" name="auth">
+            <property name="be.mm.auth.type" value="file"/>
+            <property name="be.mm.auth.file.location" value="/Users/yxu/tibco/be6/be/6.2/mm/config/users.pwd"/>
+            <property name="java.security.auth.login.config" value="/Users/yxu/tibco/be6/be/6.2/mm/config/jaas-config.config"/>
+        </property-group>
+    </property-group>
+</cluster>

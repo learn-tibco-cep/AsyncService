@@ -21,6 +21,7 @@ void rulefunction RuleFunctions.Preprocessors.onClientRequest {
 		h.request = evt.message;
 		h.requestTime = evt.requestTime;
 		h.receiptTime = System.currentTimeMillis();
+		Stats.addStat("ClientRequestDelay", h.receiptTime - h.requestTime);
 		if (maxResp > 1) {
 			h.expectedResponses = Math.ceil(Math.random() * maxResp);
 		}
@@ -37,6 +38,7 @@ void rulefunction RuleFunctions.Preprocessors.onClientRequest {
 			h.receiptTime /*requestTime long */,
 			h.expectedResponses /*expectedResponses long */);
 		Event.sendEvent(req);
+		Stats.addStat("SendServiceRequest", System.currentTimeMillis() - h.receiptTime);
 		Log.log(logger, "debug", "Send service request '%s'; expect %d responses", extId, req.expectedResponses);
 		
 		// cleanup event

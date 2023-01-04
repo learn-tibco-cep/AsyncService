@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration:StudioProjectConfiguration xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:configuration="http:///com/tibco/cep/studio/common/configuration/model/project_configuration.ecore" name="AsyncService" version="6.2.2" build="044" xpathVersion="2.0">
   <javaSourceFolderEntries entryType="JAVA_SOURCE_FOLDER" path="/Demo/JavaSrc" readOnly="true"/>
-  <enterpriseArchiveConfiguration name="Demo" author="yxu" version="3" path="/Users/yxu/work/be6/deploy/asyncservice/Demo.ear" tempOutputPath="/Users/yxu/work/be6/tmp" overwrite="true"/>
+  <enterpriseArchiveConfiguration name="Demo" author="yxu" version="6" path="/Users/yxu/work/be6/deploy/asyncservice/Demo.ear" tempOutputPath="/Users/yxu/work/be6/tmp" overwrite="true"/>
   <bpmnProcessSettings/>
 </configuration:StudioProjectConfiguration>

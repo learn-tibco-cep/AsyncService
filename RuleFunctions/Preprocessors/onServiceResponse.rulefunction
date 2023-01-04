@@ -16,6 +16,8 @@ void rulefunction RuleFunctions.Preprocessors.onServiceResponse {
 			return;
 		}
 		
+		long startTime = System.currentTimeMillis();
+		Stats.addStat("ServiceResponseDelay", startTime - evt.responseTime);
 		// acquire lock on correlation ID
 		long lockWait = System.getGlobalVariableAsLong("Agent/LockWait", 50);
 		int lockRetry = System.getGlobalVariableAsInt("Agent/LockRetry", 3);
@@ -27,6 +29,8 @@ void rulefunction RuleFunctions.Preprocessors.onServiceResponse {
 			Event.consumeEvent(evt);
 			return;
 		}
+		long lockTime = System.currentTimeMillis();
+		Stats.addStat("AcquireHandleLock", lockTime - startTime);
 		
 		// fetch collector into working memory
 		Concepts.Handler h;
@@ -37,6 +41,7 @@ void rulefunction RuleFunctions.Preprocessors.onServiceResponse {
 			// when running store/cache, set ResponseEndpoint to `shared`, so only one agent will process it
 			h = Cluster.DataGrid.CacheLoadConceptByExtIdByUri(evt.correlationId, true, "/Concepts/Handler");
 		}
+		Stats.addStat("RetrieveHandle", System.currentTimeMillis() - lockTime);
 		if (h == null) {
 			// when running multiple in-memory instances, only one instance will have the valid handler
 			Log.log(logger, "info", "Ignore service response: Failed to load handler '%s'", evt.correlationId);
