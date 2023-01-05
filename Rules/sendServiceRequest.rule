@@ -1,0 +1,37 @@
+/**
+ * @description 
+ * @author Pro-Branes.local
+ */
+rule Rules.sendServiceRequest {
+	attribute {
+		priority = 5;
+		forwardChain = true;
+	}
+	declare {
+		Concepts.Handler handler;
+		Events.ClientRequest evt;
+	}
+	when {
+		evt.correlationId == handler@extId;
+	}
+	then {
+		Object logger = Log.getLogger("Rules.sendServiceRequest");
+		Log.log(logger, "info", "Received client request: %s", evt.message);
+		
+		// send service request
+		Events.ServiceRequest req = Events.ServiceRequest.ServiceRequest(
+			null /*extId String */,
+			null /*payload String */,
+			handler@extId /*correlationId String */,
+			handler.request /*message String */,
+			handler.receiptTime /*requestTime long */,
+			handler.expectedResponses /*expectedResponses long */);
+		Event.sendEvent(req);
+		Stats.addStat("SendServiceRequest", System.currentTimeMillis() - handler.receiptTime);
+		Log.log(logger, "debug", "Send service request '%s'; expect %d responses", handler@extId, req.expectedResponses);
+		
+		// cleanup event
+		Event.consumeEvent(evt);
+		Log.log(logger, "info", "Cleanup client request: %s", evt.message);		
+	}
+}

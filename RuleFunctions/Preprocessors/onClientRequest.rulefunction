@@ -11,7 +11,7 @@ void rulefunction RuleFunctions.Preprocessors.onClientRequest {
 	body {
 		Object logger = Log.getLogger("RuleFunctions.Preprocessors.onClientRequest");
 		Log.log(logger, "info", "Received client request: %s", evt.message);
-		
+
 		// create a new collector to handle new client request
 		String extId = String.format("CR-%d", System.nanoTime());
 		Log.log(logger, "debug", "Create handler '%s'", extId);
@@ -29,20 +29,7 @@ void rulefunction RuleFunctions.Preprocessors.onClientRequest {
 			h.expectedResponses = 1;
 		}
 
-		// send service request
-		Events.ServiceRequest req = Events.ServiceRequest.ServiceRequest(
-			null /*extId String */,
-			null /*payload String */,
-			h@extId /*correlationId String */,
-			h.request /*message String */,
-			h.receiptTime /*requestTime long */,
-			h.expectedResponses /*expectedResponses long */);
-		Event.sendEvent(req);
-		Stats.addStat("SendServiceRequest", System.currentTimeMillis() - h.receiptTime);
-		Log.log(logger, "debug", "Send service request '%s'; expect %d responses", extId, req.expectedResponses);
-		
-		// cleanup event
-		Event.consumeEvent(evt);
-		Log.log(logger, "info", "Cleanup client request: %s", evt.message);
+		// set event correlation for sending service request rule from rule
+		evt.correlationId = extId;
 	}
 }

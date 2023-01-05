@@ -23,7 +23,8 @@ void rulefunction TestDriver.publishClientRequests {
 				null /*extId String */,
 				null /*payload String */,
 				String.format("%s-test %d", name, i) /*message String */,
-				System.currentTimeMillis() /*requestTime long */);
+				System.currentTimeMillis() /*requestTime long */,
+				null /*correlationId String */);
 				
 			// send request immediately since it is called as event preprocessor
 			Event.sendEvent(req);

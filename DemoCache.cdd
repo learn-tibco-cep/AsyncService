@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <cluster xmlns="http://tibco.com/businessevents/configuration/6.2">
     <revision>
-        <version>77</version>
+        <version>83</version>
         <author>yxu</author>
-        <date>2023/01/04 12:42:42</date>
+        <date>2023/01/05 16:26:02</date>
         <comment/>
     </revision>
     <name>Demo</name>
@@ -209,6 +209,9 @@
                             <property>
                                 <name>requestTime</name>
                             </property>
+                            <property>
+                                <name>correlationId</name>
+                            </property>
                         </properties>
                     </backing-store>
                     <keys>
@@ -378,7 +381,9 @@
     </log-configs>
     <agent-classes>
         <inference-agent-class id="inference-class">
-            <rules/>
+            <rules>
+                <uri>/Rules/sendServiceRequest</uri>
+            </rules>
             <destinations>
                 <destination id="clientRequest_F839205">
                     <pre-processor>/RuleFunctions/Preprocessors/onClientRequest</pre-processor>
@@ -408,8 +413,8 @@
                 </eviction>
             </local-cache>
             <shared-queue>
-                <size>2048</size>
-                <workers>24</workers>
+                <size>1024</size>
+                <workers>10</workers>
             </shared-queue>
             <load>
                 <max-active/>
@@ -548,7 +553,7 @@
             <cache-storage-enabled>false</cache-storage-enabled>
             <db-concepts>false</db-concepts>
             <property-group>
-                <property name="tibco.clientVar.Test/RequestCount" value="1001"/>
+                <property name="tibco.clientVar.Test/RequestCount" value="5001"/>
                 <property name="tibco.clientVar.Test/RequestInterval" value="50"/>
                 <property name="tibco.clientVar.Test/Publishers" value="3"/>
             </property-group>

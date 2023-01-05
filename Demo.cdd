@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <cluster xmlns="http://tibco.com/businessevents/configuration/6.2">
     <revision>
-        <version>57</version>
+        <version>58</version>
         <author>yxu</author>
-        <date>2022/12/28 10:41:06</date>
+        <date>2023/01/05 16:17:46</date>
         <comment/>
     </revision>
     <name>Demo</name>
@@ -118,7 +118,9 @@
     </log-configs>
     <agent-classes>
         <inference-agent-class id="inference-class">
-            <rules/>
+            <rules>
+                <uri>/Rules/sendServiceRequest</uri>
+            </rules>
             <destinations>
                 <destination id="clientRequest_F839205">
                     <pre-processor>/RuleFunctions/Preprocessors/onClientRequest</pre-processor>
