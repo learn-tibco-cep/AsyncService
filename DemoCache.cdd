@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <cluster xmlns="http://tibco.com/businessevents/configuration/6.2">
     <revision>
-        <version>83</version>
+        <version>99</version>
         <author>yxu</author>
-        <date>2023/01/05 16:26:02</date>
+        <date>2023/01/11 13:05:35</date>
         <comment/>
     </revision>
     <name>Demo</name>
@@ -12,7 +12,7 @@
         <type>Ignite</type>
         <class>com.tibco.cep.ignite.cluster.IgniteClusterProvider</class>
         <properties>
-            <property name="discovery-url" value="127.0.0.1:47500..47510"/>
+            <property name="discovery-url" value="%%Ignite/HostName%%:47500..47510"/>
             <property name="listen-port" value="47500..47510"/>
             <property name="communication-port" value="47100..47110"/>
             <property name="socket-write-timeout" value="30000"/>
@@ -21,7 +21,7 @@
             <property name="network-timeout" value="30000"/>
             <property name="failure-detection-timeout" value="30000"/>
             <property name="hostaware-enable" value="true"/>
-            <property name="hostaware-hostname" value="localhost"/>
+            <property name="hostaware-hostname" value="%%Ignite/HostName%%"/>
         </properties>
         <security enabled="false">
             <property name="ssl.trusted.certificate.folder.path" value=""/>
@@ -256,6 +256,27 @@
                     <encryption/>
                     <composite-indexes/>
                 </domain-object>
+                <domain-object>
+                    <mode>memory</mode>
+                    <uri>/Events/HandleTimeout</uri>
+                    <backing-store>
+                        <enabled>false</enabled>
+                        <table-name/>
+                        <properties>
+                            <property>
+                                <name>correlationId</name>
+                            </property>
+                        </properties>
+                    </backing-store>
+                    <keys>
+                        <key/>
+                    </keys>
+                    <indexes>
+                        <index/>
+                    </indexes>
+                    <encryption/>
+                    <composite-indexes/>
+                </domain-object>
             </domain-objects>
             <backing-store>
                 <persistence-option>None</persistence-option>
@@ -316,8 +337,8 @@
                 <enabled>true</enabled>
                 <dir>logs</dir>
                 <name/>
-                <max-number/>
-                <max-size/>
+                <max-number>10</max-number>
+                <max-size>50000000</max-size>
                 <append>false</append>
             </files>
             <terminal>
@@ -401,6 +422,14 @@
                     <thread-affinity-rule-function/>
                     <uri>/Channels/FTLService/serviceResponse</uri>
                 </destination>
+                <destination id="handleTimeout_8C5C141">
+                    <pre-processor>/RuleFunctions/Preprocessors/onHandleTimeout</pre-processor>
+                    <queue-size/>
+                    <thread-count/>
+                    <threading-model>shared-queue</threading-model>
+                    <thread-affinity-rule-function/>
+                    <uri>/Channels/Local/handleTimeout</uri>
+                </destination>
             </destinations>
             <startup>
                 <uri>/Stats/initializeStats</uri>
@@ -413,8 +442,8 @@
                 </eviction>
             </local-cache>
             <shared-queue>
-                <size>1024</size>
-                <workers>10</workers>
+                <size>2048</size>
+                <workers>%%Agent/SharedThreads%%</workers>
             </shared-queue>
             <load>
                 <max-active/>
@@ -499,7 +528,7 @@
             </local-cache>
             <shared-queue>
                 <size>1024</size>
-                <workers>10</workers>
+                <workers>%%Mock/SharedThreads%%</workers>
             </shared-queue>
             <load>
                 <max-active/>
@@ -538,6 +567,8 @@
                 <property name="tibco.clientVar.FTL/ResponseEndpoint" value="shared"/>
                 <property name="tibco.clientVar.FTL/ResponseDurable" value="ServiceResponse"/>
                 <property name="tibco.clientVar.Agent/RequestTimeout" value="10000"/>
+                <property name="tibco.clientVar.Agent/LockWait" value="100"/>
+                <property name="tibco.clientVar.Agent/SharedThreads" value="64"/>
             </property-group>
         </processing-unit>
         <processing-unit id="test">
@@ -555,7 +586,7 @@
             <property-group>
                 <property name="tibco.clientVar.Test/RequestCount" value="5001"/>
                 <property name="tibco.clientVar.Test/RequestInterval" value="50"/>
-                <property name="tibco.clientVar.Test/Publishers" value="3"/>
+                <property name="tibco.clientVar.Test/Publishers" value="5"/>
             </property-group>
         </processing-unit>
         <processing-unit id="mock">
@@ -572,6 +603,9 @@
             <db-concepts>false</db-concepts>
             <property-group>
                 <property name="tibco.clientVar.FTL/ResponseEndpoint" value="shared"/>
+                <property name="tibco.clientVar.Mock/SharedThreads" value="64"/>
+                <property name="tibco.clientVar.Mock/MinWait" value="30"/>
+                <property name="tibco.clientVar.Mock/MaxWait" value="70"/>
             </property-group>
         </processing-unit>
         <processing-unit id="cache">
@@ -606,5 +640,7 @@
             <property name="be.mm.auth.file.location" value="/Users/yxu/tibco/be6/be/6.2/mm/config/users.pwd"/>
             <property name="java.security.auth.login.config" value="/Users/yxu/tibco/be6/be/6.2/mm/config/jaas-config.config"/>
         </property-group>
+        <property name="tibco.clientVar.FTL/Server_URL" value="http://localhost:8585"/>
+        <property name="tibco.clientVar.Ignite/HostName" value="localhost"/>
     </property-group>
 </cluster>

@@ -13,26 +13,38 @@ void rulefunction RuleFunctions.sendClientResponse {
 		Log.log(logger, "debug", "Handler '%s' sends client response", handler@extId);
 		
 		// assemble response payload
-		Object buff = String.createBuffer(1024);
-		String.append(buff, String.format("{\"request\": \"%s\",", handler.request));
-		String.append(buff, String.format("\"expected\": %d", handler.expectedResponses));
-		if (handler.responses@length > 0) {
-			String.append(buff, ",\"responses\": [");
-			for (int i = 0; i < handler.responses@length; i++) {
-				if (i > 0) {
-					String.append(buff, ",");
+		String payload;
+		try {
+			Object buff = String.createBuffer(1024);
+			String.append(buff, String.format("{\"request\": \"%s\",", handler.request));
+			String.append(buff, String.format("\"expected\": %d", handler.expectedResponses));
+			if (handler.responses@length > 0) {
+				String.append(buff, ",\"responses\": [");
+				for (int i = 0; i < handler.responses@length; i++) {
+					if (i > 0) {
+						String.append(buff, ",");
+					}
+					if (handler.responses[i] != null) {
+						String.append(buff, String.format("\"%s\"", handler.responses[i].response));
+					} else {
+						String.append(buff, "\"\"");
+						Log.log(logger, "error", "Missing response %d in handler '%s'", i, handler@extId);
+					}
 				}
-				String.append(buff, String.format("\"%s\"", handler.responses[i].response));
+				String.append(buff, "]");
 			}
-			String.append(buff, "]");
+			String.append(buff, "}");
+			payload = String.convertBufferToString(buff);
+		} catch (Exception e) {
+			payload = "";
+			Log.logException(logger, "error", "Failed to assemble client response for handler '%s'", e, handler@extId);
 		}
-		String.append(buff, "}");
 
 		// send client response event
 		handler.responseTime = System.currentTimeMillis();
 		Events.ClientResponse resp = Events.ClientResponse.ClientResponse(
 			null /*extId String */,
-			String.convertBufferToString(buff) /*payload String */,
+			payload /*payload String */,
 			handler.request /*message String */,
 			handler.requestTime /*requestTime long */,
 			handler.receiptTime /*receiptTime long */,

@@ -14,13 +14,15 @@ void rulefunction RuleFunctions.Preprocessors.onClientRequest {
 
 		// create a new collector to handle new client request
 		String extId = String.format("CR-%d", System.nanoTime());
-		Log.log(logger, "debug", "Create handler '%s'", extId);
+		Log.log(logger, "info", "Create handler '%s'", extId);
 		
 		long maxResp = System.getGlobalVariableAsLong("Agent/MaxResponseCount", 1);
 		Concepts.Handler h = Instance.newInstance("/Concepts/Handler", extId);
 		h.request = evt.message;
 		h.requestTime = evt.requestTime;
 		h.receiptTime = System.currentTimeMillis();
+		h.status = "";
+		
 		Stats.addStat("ClientRequestDelay", h.receiptTime - h.requestTime);
 		if (maxResp > 1) {
 			h.expectedResponses = Math.ceil(Math.random() * maxResp);

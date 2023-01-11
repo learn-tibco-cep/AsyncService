@@ -24,8 +24,10 @@ void rulefunction RuleFunctions.updateStats {
 		if (handler.responses@length > 0) {
 			Log.log(logger, "info", "Update stats of %d service responses for handler '%s'", handler.responses@length, handler@extId);
 			for (int i = 0; i < handler.responses@length; i++) {
-				Stats.addStat("ServiceElapsed", handler.responses[i].responseTime - handler.responses[i].requestTime);
-				Stats.addStat("ServiceEnd2End", handler.responses[i].receiptTime - handler.receiptTime);
+				if (handler.responses[i] != null) {
+					Stats.addStat("ServiceElapsed", handler.responses[i].responseTime - handler.responses[i].requestTime);
+					Stats.addStat("ServiceEnd2End", handler.responses[i].receiptTime - handler.receiptTime);
+				}
 			}
 		}
 		

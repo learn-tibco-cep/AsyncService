@@ -1,0 +1,55 @@
+/**
+ * @description called by onServiceResponse to fetch a handler from cache, and acquire lock if it expects multiple service responses.
+ */
+void rulefunction RuleFunctions.fetchHandlerFromCache {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Events.ServiceResponse evt;
+	}
+	body {
+		Object logger = Log.getLogger("RuleFunctions.fetchHandlerFromCache");
+		
+		// load handler from cache
+		/* remove this optimization, which appears causing data loss on previously collected responses
+		long startTime = System.currentTimeMillis();
+		Concepts.Handler h = Cluster.DataGrid.CacheLoadConceptByExtIdByUri(evt.correlationId, true, "/Concepts/Handler");
+		Stats.addStat("RetrieveHandler", System.currentTimeMillis() - startTime);
+		if (h == null) {
+			// This is an error if handler is not in cache
+			Log.log(logger, "info", "Ignore service response: Failed to load handler '%s'", evt.correlationId);
+			Event.consumeEvent(evt);
+			return;
+		}
+		if (h.expectedResponses <= 1) {
+			Log.log(logger, "info", "Loaded handler '%s' with no lock", h@extId);
+			return;
+		}
+		*/
+		// acquire lock on correlation ID
+		long lockWait = System.getGlobalVariableAsLong("Agent/LockWait", 50);
+		int lockRetry = System.getGlobalVariableAsInt("Agent/LockRetry", 3);
+		long startTime = System.currentTimeMillis();
+		boolean locked = RuleFunctions.acquireLock(evt.correlationId, lockWait, lockRetry, false);
+		if (!locked) {
+			Stats.addStat("FailedHandlerLock", System.currentTimeMillis() - startTime);
+			Log.log(logger, "info", "Ignore service response: Failed lock on '%s'", evt.correlationId);
+			Event.consumeEvent(evt);
+			return;
+		}
+		long lockTime = System.currentTimeMillis();
+		Stats.addStat("AcquireHandlerLock", lockTime - startTime);
+		
+		// reload handler after lock
+		Concepts.Handler h = Cluster.DataGrid.CacheLoadConceptByExtIdByUri(evt.correlationId, true, "/Concepts/Handler");
+		Stats.addStat("RetrieveLockedHandler", System.currentTimeMillis() - lockTime);
+		if (h == null) {
+			// Failed reload is an error.  should not come here
+			Log.log(logger, "info", "Ignore service response: Failed to load locked handler '%s'", evt.correlationId);
+			Event.consumeEvent(evt);
+			return;
+		}
+		Log.log(logger, "info", "Loaded locked handler '%s'", h@extId);
+	}
+}

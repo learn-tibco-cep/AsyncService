@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<repository xmlns="http://www.tibco.com/xmlns/repo/types/2002">
+    <globalVariables>
+        <globalVariable>
+            <name>HostName</name>
+            <value>localhost</value>
+            <type>String</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1673199079047</modTime>
+        </globalVariable>
+    </globalVariables>
+</repository>

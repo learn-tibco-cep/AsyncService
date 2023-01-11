@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<event:SimpleEvent xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:event="http:///com/tibco/cep/designtime/core/model/event" folder="/Events/" name="HandleTimeout" description="" GUID="54408B45-6431-5D00-A34A-951E779CE2B6" ownerProjectName="AsyncService" superEventPath="" ttlUnits="Seconds" channelURI="/Channels/Local" destinationName="handleTimeout">
+  <properties name="correlationId" ownerProjectName="AsyncService"/>
+  <expiryAction name="HandleTimeout_expiryAction" ownerProjectName="AsyncService" actionText="" conditionText="">
+    <symbols>
+      <symbolList idName="handletimeout" type="/Events/HandleTimeout"/>
+    </symbols>
+  </expiryAction>
+</event:SimpleEvent>

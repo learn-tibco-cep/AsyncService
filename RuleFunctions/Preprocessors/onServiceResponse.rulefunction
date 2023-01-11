@@ -18,11 +18,17 @@ void rulefunction RuleFunctions.Preprocessors.onServiceResponse {
 		
 		long startTime = System.currentTimeMillis();
 		Stats.addStat("ServiceResponseDelay", startTime - evt.responseTime);
-		// acquire lock on correlation ID
+		
+		boolean lockLocal = System.getGlobalVariableAsBoolean("Agent/LockLocal", true);
+		if (!lockLocal) {
+			// if configured to use non-local lock, load handler from cache
+			RuleFunctions.fetchHandlerFromCache(evt);
+			return;
+		}
+		
+		// this is in-memory deployment. acquire local lock on correlation ID
 		long lockWait = System.getGlobalVariableAsLong("Agent/LockWait", 50);
 		int lockRetry = System.getGlobalVariableAsInt("Agent/LockRetry", 3);
-		// when running in-memory agent, call local-only lock
-		boolean lockLocal = System.getGlobalVariableAsBoolean("Agent/LockLocal", true);		
 		boolean locked = RuleFunctions.acquireLock(evt.correlationId, lockWait, lockRetry, lockLocal);
 		if (!locked) {
 			Log.log(logger, "info", "Ignore service response: Failed lock on '%s'", evt.correlationId);
@@ -30,24 +36,17 @@ void rulefunction RuleFunctions.Preprocessors.onServiceResponse {
 			return;
 		}
 		long lockTime = System.currentTimeMillis();
-		Stats.addStat("AcquireHandleLock", lockTime - startTime);
+		Stats.addStat("AcquireHandlerLock", lockTime - startTime);
 		
 		// fetch collector into working memory
-		Concepts.Handler h;
-		if (lockLocal) {
-			// when running in-memory instances, set ResponseEndpoint to `default`, so all instances will process it
-			h = Instance.getByExtIdByUri(evt.correlationId, "/Concepts/Handler");
-		} else {
-			// when running store/cache, set ResponseEndpoint to `shared`, so only one agent will process it
-			h = Cluster.DataGrid.CacheLoadConceptByExtIdByUri(evt.correlationId, true, "/Concepts/Handler");
-		}
-		Stats.addStat("RetrieveHandle", System.currentTimeMillis() - lockTime);
+		Concepts.Handler h = Instance.getByExtIdByUri(evt.correlationId, "/Concepts/Handler");
+		Stats.addStat("RetrieveHandler", System.currentTimeMillis() - lockTime);
 		if (h == null) {
 			// when running multiple in-memory instances, only one instance will have the valid handler
-			Log.log(logger, "info", "Ignore service response: Failed to load handler '%s'", evt.correlationId);
+			Log.log(logger, "info", "Ignore service response: Failed to load locked handler '%s'", evt.correlationId);
 			Event.consumeEvent(evt);
 			return;
 		}
-		Log.log(logger, "info", "Loaded handler '%s'", h@extId);
+		Log.log(logger, "info", "Loaded locked handler '%s'", h@extId);
 	}
 }

@@ -11,7 +11,7 @@ void rulefunction RuleFunctions.handleServiceResponse {
 	}
 	body {
 		Object logger = Log.getLogger("RuleFunctions.handleServiceResponse");
-		Log.log(logger, "debug", "handler '%s' adds service response '%s'", handler@extId, resp.response);
+		Log.log(logger, "info", "handler '%s' adds service response '%s'", handler@extId, resp.response);
 		
 		// add response to handler
 		handler.responses[handler.responses@length] = Concepts.Response.Response(
@@ -22,6 +22,7 @@ void rulefunction RuleFunctions.handleServiceResponse {
 			System.currentTimeMillis() /*receiptTime long */);
 			
 		if (handler.expectedResponses <= handler.responses@length) {
+			// set status to trigger transacton to end the lifecycle
 			handler.status = "Complete";
 		}
 		

@@ -19,17 +19,17 @@
             <serviceSettable>false</serviceSettable>
             <description/>
             <constraint/>
-            <modTime>1671667297733</modTime>
+            <modTime>1673372679580</modTime>
         </globalVariable>
         <globalVariable>
             <name>LockRetry</name>
-            <value>3</value>
+            <value>10</value>
             <type>Integer</type>
             <deploymentSettable>true</deploymentSettable>
             <serviceSettable>false</serviceSettable>
             <description/>
             <constraint/>
-            <modTime>1671667317907</modTime>
+            <modTime>1673367697837</modTime>
         </globalVariable>
         <globalVariable>
             <name>LockLocal</name>
@@ -53,13 +53,23 @@
         </globalVariable>
         <globalVariable>
             <name>PrintStats</name>
-            <value>200</value>
+            <value>500</value>
             <type>Integer</type>
             <deploymentSettable>true</deploymentSettable>
             <serviceSettable>false</serviceSettable>
             <description/>
             <constraint/>
-            <modTime>1671897686752</modTime>
+            <modTime>1673367763935</modTime>
+        </globalVariable>
+        <globalVariable>
+            <name>SharedThreads</name>
+            <value>10</value>
+            <type>Integer</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1673376601852</modTime>
         </globalVariable>
     </globalVariables>
 </repository>

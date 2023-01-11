@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<repository xmlns="http://www.tibco.com/xmlns/repo/types/2002">
+    <globalVariables>
+        <globalVariable>
+            <name>MinWait</name>
+            <value>30</value>
+            <type>Integer</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1673367985953</modTime>
+        </globalVariable>
+        <globalVariable>
+            <name>MaxWait</name>
+            <value>70</value>
+            <type>Integer</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1673368031476</modTime>
+        </globalVariable>
+        <globalVariable>
+            <name>SharedThreads</name>
+            <value>10</value>
+            <type>Integer</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1673376545693</modTime>
+        </globalVariable>
+    </globalVariables>
+</repository>

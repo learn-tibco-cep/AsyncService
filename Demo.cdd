@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <cluster xmlns="http://tibco.com/businessevents/configuration/6.2">
     <revision>
-        <version>58</version>
+        <version>59</version>
         <author>yxu</author>
-        <date>2023/01/05 16:17:46</date>
+        <date>2023/01/11 12:25:41</date>
         <comment/>
     </revision>
     <name>Demo</name>
@@ -137,6 +137,14 @@
                     <threading-model>shared-queue</threading-model>
                     <thread-affinity-rule-function/>
                     <uri>/Channels/FTLService/serviceResponse</uri>
+                </destination>
+                <destination id="handleTimeout_36874BD8">
+                    <pre-processor>/RuleFunctions/Preprocessors/onHandleTimeout</pre-processor>
+                    <queue-size/>
+                    <thread-count/>
+                    <threading-model>shared-queue</threading-model>
+                    <thread-affinity-rule-function/>
+                    <uri>/Channels/Local/handleTimeout</uri>
                 </destination>
             </destinations>
             <startup>

@@ -1,0 +1,66 @@
+/**
+ * @description handles state timeout in Handler state machine.
+ */
+void rulefunction RuleFunctions.Preprocessors.onHandleTimeout {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Events.HandleTimeout evt;
+	}
+	body {
+		Object logger = Log.getLogger("RuleFunctions.Preprocessors.onHandleTimeout");
+		
+		// need to take a lock for handler state updates to avoid race condition of delayed response events
+		long startTime = System.currentTimeMillis();
+		boolean lockLocal = System.getGlobalVariableAsBoolean("Agent/LockLocal", true);
+		long lockWait = System.getGlobalVariableAsLong("Agent/LockWait", 50);
+		int lockRetry = System.getGlobalVariableAsInt("Agent/LockRetry", 3);
+		boolean locked = RuleFunctions.acquireLock(evt.correlationId, lockWait, lockRetry, lockLocal);
+		if (!locked) {
+			Stats.addStat("FailedHandlerLock", System.currentTimeMillis() - startTime);
+			Log.log(logger, "error", "Failed lock on '%s' timeout", evt.correlationId);
+			Event.consumeEvent(evt);
+			return;
+		}
+		long lockTime = System.currentTimeMillis();
+		Stats.addStat("AcquireHandlerLock", lockTime - startTime);
+		
+		Concepts.Handler h;
+		if (lockLocal) {
+			// fetch handler in-memory
+			h = Instance.getByExtIdByUri(evt.correlationId, "/Concepts/Handler");
+		} else {
+			// fetch handler from cache
+			h = Cluster.DataGrid.CacheLoadConceptByExtIdByUri(evt.correlationId, true, "/Concepts/Handler");
+		}
+		Stats.addStat("RetrieveLockedHandler", System.currentTimeMillis() - lockTime);
+		
+		if (h == null) {
+			// Failed to load handler.  it is an error.
+			Log.log(logger, "error", "Ignore handler timeout: Failed to load locked handler '%s'", evt.correlationId);
+			Event.consumeEvent(evt);
+			return;
+		}
+		
+		// In principle, the state-machine should take over to complete the other timeout tasks.
+		// However, most of the timeout cases are due to misteriously inactive state-machines.
+		// To work around the problem, we continue to perform the resst of actions as in state-machine here.
+		
+		// set status for client response
+		if (h.expectedResponses <= h.responses@length) {
+			// small possibility to get here, since the event is triggered by state timeout
+			h.status = "Complete";
+		} else {
+			h.status = "Timeout";
+		}
+		Log.log(logger, "info", "Updated handler '%s' status to [%s]", h@extId, h.status);
+		
+		RuleFunctions.sendClientResponse(h);
+		RuleFunctions.updateStats(h);
+		
+		Log.log(logger, "info", "Cleanup handler '%s'", h@extId);
+		Instance.deleteInstance(h);
+		Event.consumeEvent(evt);
+	}
+}
