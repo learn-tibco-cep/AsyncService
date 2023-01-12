@@ -43,6 +43,13 @@ void rulefunction RuleFunctions.Preprocessors.onHandleTimeout {
 			return;
 		}
 		
+		// ignore timeout if status already set, i.e., lifecycle completed by another thread
+		if (h.status != "") {
+			Log.log(logger, "info", "Ignore timeout event: Handler '%s' already completed", h@extId);
+			Event.consumeEvent(evt);
+			return;
+		}
+		
 		// In principle, the state-machine should take over to complete the other timeout tasks.
 		// However, most of the timeout cases are due to misteriously inactive state-machines.
 		// To work around the problem, we continue to perform the resst of actions as in state-machine here.

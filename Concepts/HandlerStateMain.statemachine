@@ -106,7 +106,7 @@
       </properties>
       <properties xsi:type="designtime:SimpleProperty" name="index" value="false"/>
     </extendedProperties>
-    <entryAction name="HandlerStateMain_Timeout_entryAction" ownerProjectName="AsyncService" actionText="Object logger = Log.getLogger(&quot;HandlerStateMain.Timeout&quot;);&#xA;Log.log(logger, &quot;info&quot;, &quot;Handler '%s' in Timeout&quot;, handler@extId);&#xA;handler.status = &quot;Timeout&quot;;" conditionText="">
+    <entryAction name="HandlerStateMain_Timeout_entryAction" ownerProjectName="AsyncService" actionText="" conditionText="">
       <symbols>
         <symbolList idName="handler" type="/Concepts/Handler"/>
       </symbols>
@@ -150,7 +150,7 @@
     </guardRule>
   </stateTransitions>
   <stateTransitions name="Transition_3" GUID="B9D9268E-9871-72E0-AAFA-860DC8B45C05" ownerProjectName="AsyncService" ownerStateMachinePath="/Concepts/HandlerStateMain" toState="//@stateEntities.1" fromState="//@stateEntities.3" label="">
-    <guardRule name="HandlerStateMain_Transition_3_guardRule" ownerProjectName="AsyncService" actionText="RuleFunctions.sendClientResponse(handler);" conditionText="handler@extId == handletimeout.correlationId;" priority="5">
+    <guardRule name="HandlerStateMain_Transition_3_guardRule" ownerProjectName="AsyncService" actionText="Object logger = Log.getLogger(&quot;HandlerStateMain.Timeout&quot;);&#xA;// set status for client response&#xA;if (handler.expectedResponses &lt;= handler.responses@length) {&#xA;&#x9;// small possibility to get here, since the event is triggered by state timeout&#xA;&#x9;handler.status = &quot;Complete&quot;;&#xA;} else {&#xA;&#x9;handler.status = &quot;Timeout&quot;;&#xA;}&#xA;Log.log(logger, &quot;info&quot;, &quot;Updated handler '%s' status to [%s]&quot;, handler@extId, handler.status);&#xA;&#xA;RuleFunctions.sendClientResponse(handler);" conditionText="handler@extId == handletimeout.correlationId;" priority="5">
       <symbols>
         <symbolList idName="handler" type="/Concepts/Handler"/>
         <symbolList idName="handletimeout" type="/Events/HandleTimeout"/>
