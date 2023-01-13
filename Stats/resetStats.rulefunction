@@ -1,0 +1,35 @@
+/**
+ * @description for all stat with count greater than specified min, save the total count and then cleanup the stats.
+ */
+void rulefunction Stats.resetStats {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		long minCount;
+	}
+	body {
+		Object logger = Log.getLogger("Stats.resetStats");
+		
+		// make it thread-safe
+		String lockKey = "ResetStats";
+		if (Cluster.DataGrid.Lock(lockKey, 1000L, true)) {
+			Object repo = Collections.Map.getMap(Stats.Config.MapId);
+			Object entries = Collections.Map.entrySet(Collections.Map.get(repo, Stats.Config.Count));
+		
+			Object iter = Collections.iterator(entries);
+			while (Collections.Iterator.hasNext(iter)) {
+				Object entry = Collections.Iterator.next(iter);
+				Object name = Collections.Map.Entry.getKey(entry);
+				long c = Collections.Map.Entry.getValue(entry);
+				if (c >= minCount) {
+					// record total count up to the reset
+					Stats.increaseCount(Collections.Map.get(repo, Stats.Config.LastReset), name, c);
+					Stats.removeStat(name);
+					Log.log(logger, "info", "Reset stat of [%s]", name);
+				}
+			}
+			Cluster.DataGrid.UnLock(lockKey, true);
+		}
+	}
+}

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<event:SimpleEvent xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:event="http:///com/tibco/cep/designtime/core/model/event" folder="/TestMock/" name="BufferedRequest" description="" GUID="029F141F-F05B-F443-4B55-CF4D7DC97581" ownerProjectName="AsyncService" superEventPath="" ttlUnits="Seconds" channelURI="/TestMock/Local" destinationName="bufferedRequest">
+  <properties name="correlationId" ownerProjectName="AsyncService"/>
+  <properties name="request" ownerProjectName="AsyncService"/>
+  <expiryAction name="BufferedRequest_expiryAction" ownerProjectName="AsyncService" actionText="" conditionText="">
+    <symbols>
+      <symbolList idName="bufferedrequest" type="/TestMock/BufferedRequest"/>
+    </symbols>
+  </expiryAction>
+</event:SimpleEvent>

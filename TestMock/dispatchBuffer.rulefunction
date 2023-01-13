@@ -1,0 +1,31 @@
+/**
+ * @description 
+ */
+void rulefunction TestMock.dispatchBuffer {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		
+	}
+	body {
+		Object logger = Log.getLogger("TestMock.dispatchBuffer");
+		Object buff = Collections.Map.getMap("BUFFER");
+		Log.log(logger, "info", "Dispatch %d buffered requests", Collections.Map.size(buff));
+		
+		Object entries = Collections.Map.entrySet(buff);
+		Object iter = Collections.iterator(entries);
+		while (Collections.Iterator.hasNext(iter)) {
+			Object entry = Collections.Iterator.next(iter);
+			String k = Collections.Map.Entry.getKey(entry);
+			String v = Collections.Map.Entry.getValue(entry);
+			Log.log(logger, "info", "Dispatch buffered request '%s'", k);
+			TestMock.BufferedRequest evt = TestMock.BufferedRequest.BufferedRequest(
+				null /*extId String */,
+				null /*payload String */,
+				k /*correlationId String */,
+				v/*request String */);
+			Event.sendEvent(evt);
+		}
+	}
+}

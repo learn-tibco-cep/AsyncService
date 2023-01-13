@@ -34,7 +34,10 @@ void rulefunction RuleFunctions.updateStats {
 		// print out stats at configured stat counts
 		int count = Stats.getStatCount("Complete-HandleElapsed") + Stats.getStatCount("Timeout-HandleElapsed");
 		if (count % printStats == 0) {
-			Stats.printStats();
+			// reset stats after printout
+			int minReset = Math.round(0.9 * printStats);
+			boolean reset = System.getGlobalVariableAsBoolean("Agent/ResetStats", false);
+			Stats.printStats(reset, minReset);
 		}
 	}
 }

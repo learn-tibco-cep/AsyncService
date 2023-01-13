@@ -1,12 +1,13 @@
 /**
- * @description print out all collected stats
+ * @description print out all collected stats. optionally reset stats if count is greater than specified min.
  */
 void rulefunction Stats.printStats {
 	attribute {
 		validity = ACTION;
 	}
 	scope {
-		
+		boolean reset;
+		long minCount;
 	}
 	body {
 		Object logger = Log.getLogger("Stats.printStats");
@@ -22,7 +23,15 @@ void rulefunction Stats.printStats {
 			double v = Collections.Map.get(Collections.Map.get(repo, Stats.Config.Value), name);
 			double mx = Collections.Map.get(Collections.Map.get(repo, Stats.Config.MaxValue), name);
 			double mn = Collections.Map.get(Collections.Map.get(repo, Stats.Config.MinValue), name);
-			Log.log(logger, "info", "[%s] count: %d, avg: %.3f, max: %.3f, min: %.3f", name, c, v/c, mx, mn);
+			long r = Collections.Map.get(Collections.Map.get(repo, Stats.Config.LastReset), name);
+			long t = Collections.Map.get(Collections.Map.get(repo, Stats.Config.StartTime), name);
+			long elapsed = System.currentTimeMillis() - t;
+			double rate = 1000.0 * (r + c) / elapsed;
+			Log.log(logger, "info", "[%s] reset: %d, elapsed: %d ms, rate: %.3f/s, count: %d, avg: %.3f, max: %.3f, min: %.3f", name, r, elapsed, rate, c, v/c, mx, mn);
+		}
+		
+		if (reset) {
+			Stats.resetStats(minCount);
 		}
 	}
 }

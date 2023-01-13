@@ -1,0 +1,19 @@
+/**
+ * @description 
+ */
+long rulefunction TestMock.randomDelay {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		
+	}
+	body {
+		long minDelay = System.getGlobalVariableAsLong("Mock/MinWait", 30);
+		long maxDelay = System.getGlobalVariableAsLong("Mock/MaxWait", 70);
+		if (maxDelay <= 0) {
+			return 0;
+		}
+		return Math.round(Math.random()*(maxDelay - minDelay)) + minDelay;
+	}
+}

@@ -13,13 +13,13 @@
         </globalVariable>
         <globalVariable>
             <name>RequestInterval</name>
-            <value>50</value>
+            <value>20</value>
             <type>Integer</type>
             <deploymentSettable>true</deploymentSettable>
             <serviceSettable>false</serviceSettable>
             <description/>
             <constraint/>
-            <modTime>1671897739421</modTime>
+            <modTime>1673555050512</modTime>
         </globalVariable>
         <globalVariable>
             <name>Publishers</name>
@@ -33,13 +33,23 @@
         </globalVariable>
         <globalVariable>
             <name>PrintStats</name>
-            <value>200</value>
+            <value>500</value>
             <type>Integer</type>
             <deploymentSettable>true</deploymentSettable>
             <serviceSettable>false</serviceSettable>
             <description/>
             <constraint/>
-            <modTime>1671897700639</modTime>
+            <modTime>1673554794777</modTime>
+        </globalVariable>
+        <globalVariable>
+            <name>ResetStats</name>
+            <value>true</value>
+            <type>Boolean</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1673577498019</modTime>
         </globalVariable>
     </globalVariables>
 </repository>

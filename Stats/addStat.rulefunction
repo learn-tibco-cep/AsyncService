@@ -16,17 +16,27 @@ void rulefunction Stats.addStat {
 		if (repo == null || Collections.Map.get(repo, Stats.Config.Count) == null) {
 			return;
 		}
+		
+		// initialize first event time since engine startup
+		Object s = Collections.Map.get(Collections.Map.get(repo, Stats.Config.StartTime), name);
+		if (s == null) {
+			Log.log(logger, "info", "Initialize stat name '%s'", name);
+			Collections.Map.Concurrent.putIfAbsent(Collections.Map.get(repo, Stats.Config.LastReset), name, 0L);
+			Collections.Map.Concurrent.putIfAbsent(Collections.Map.get(repo, Stats.Config.StartTime), name, System.currentTimeMillis());
+		}
+		
+		// add stats
 		Object c = Collections.Map.get(Collections.Map.get(repo, Stats.Config.Count), name);
 		if (c == null) {
-			// initialize a new stat.  Note: may miss some initial data due to race condition, but ok for stats
-			Log.log(logger, "debug", "Add first entry for stat name '%s'", name);
+			// start new stat after reset.  Note: may miss some initial data due to race condition, but ok for stats
+			Log.log(logger, "info", "Add first entry for stat name '%s'", name);
 			Collections.Map.Concurrent.putIfAbsent(Collections.Map.get(repo, Stats.Config.Count), name, 1L);
 			Collections.Map.Concurrent.putIfAbsent(Collections.Map.get(repo, Stats.Config.Value), name, value);
 			Collections.Map.Concurrent.putIfAbsent(Collections.Map.get(repo, Stats.Config.MaxValue), name, value);
 			Collections.Map.Concurrent.putIfAbsent(Collections.Map.get(repo, Stats.Config.MinValue), name, value);
 		} else {
 			// update existing stat value
-			Stats.increaseCount(Collections.Map.get(repo, Stats.Config.Count), name);
+			Stats.increaseCount(Collections.Map.get(repo, Stats.Config.Count), name, 1L);
 			Stats.increaseValue(Collections.Map.get(repo, Stats.Config.Value), name, value);
 			Stats.setMaxValue(Collections.Map.get(repo, Stats.Config.MaxValue), name, value);
 			Stats.setMinValue(Collections.Map.get(repo, Stats.Config.MinValue), name, value);

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <cluster xmlns="http://tibco.com/businessevents/configuration/6.2">
     <revision>
-        <version>59</version>
+        <version>62</version>
         <author>yxu</author>
-        <date>2023/01/11 12:25:41</date>
+        <date>2023/01/12 13:21:35</date>
         <comment/>
     </revision>
     <name>Demo</name>
@@ -231,8 +231,18 @@
                     <thread-affinity-rule-function/>
                     <uri>/Channels/FTLService/serviceRequest</uri>
                 </destination>
+                <destination id="bufferedRequest_110AB01">
+                    <pre-processor>/TestMock/onBufferedRequest</pre-processor>
+                    <queue-size/>
+                    <thread-count/>
+                    <threading-model>shared-queue</threading-model>
+                    <thread-affinity-rule-function/>
+                    <uri>/TestMock/Local/bufferedRequest</uri>
+                </destination>
             </destinations>
-            <startup/>
+            <startup>
+                <uri>/TestMock/createBuffer</uri>
+            </startup>
             <shutdown/>
             <local-cache>
                 <eviction>
@@ -271,7 +281,7 @@
             <cache-storage-enabled>false</cache-storage-enabled>
             <db-concepts>false</db-concepts>
             <property-group>
-                <property name="tibco.clientVar.Agent/PrintStats" value="100"/>
+                <property name="tibco.clientVar.Agent/PrintStats" value="500"/>
             </property-group>
         </processing-unit>
         <processing-unit id="test">

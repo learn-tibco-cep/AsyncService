@@ -8,13 +8,14 @@ void rulefunction Stats.increaseCount {
 	scope {
 		Object cMap;
 		String name;
+		long count;
 	}
 	body {
 		boolean done = false;
 		while (!done) {
 			Object c = Collections.Map.get(cMap, name);
 			long v = c;  // convert count to long type
-			done = Collections.Map.Concurrent.replaceIfEqualToGivenValue(cMap, name, c, v + 1);
+			done = Collections.Map.Concurrent.replaceIfEqualToGivenValue(cMap, name, c, v + count);
 		}
 	}
 }

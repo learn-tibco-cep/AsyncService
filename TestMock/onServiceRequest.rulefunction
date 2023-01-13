@@ -18,15 +18,33 @@ void rulefunction TestMock.onServiceRequest {
 			size = 1;
 		}
 		long recTm = System.currentTimeMillis();
+		int bufferSize = System.getGlobalVariableAsInt("Mock/BufferSize", 0);
 		
 		for (int i = 1; i <= size; i++) {
 			if (i > 1) {
+				if (bufferSize > 0) {
+					// buffer initial set of requests for delayed processing to avoid initial system slowdown
+					Object buff = Collections.Map.getMap("BUFFER");
+					if (Collections.Map.size(buff) < bufferSize) {
+						// add request to buffer for batched response
+						Log.log(logger, "info", "Buffer %d responses for '%s'", size - 1, req.correlationId);
+						String v = String.format("%d:%d:%s", req.expectedResponses, recTm, req.message);
+						Collections.Map.Concurrent.putIfAbsent(buff, req.correlationId, v);
+						int buffered = Collections.Map.size(buff);
+						Log.log(logger, "info", "%d of %d requests in buffer", buffered, bufferSize);
+						if (buffered == bufferSize) {
+							TestMock.dispatchBuffer();
+						}
+						return;
+					}
+				}
+				
 				// add random delay to reduce chance of lock contention
-				long minDelay = System.getGlobalVariableAsLong("Mock/MinWait", 30);
-				long maxDelay = System.getGlobalVariableAsLong("Mock/MaxWait", 70);
-				long delay = Math.round(Math.random()*(maxDelay - minDelay)) + minDelay;
-				Log.log(logger, "info", "Delay response %d for '%s' by %d ms", i, req.correlationId, delay);
-				Engine.sleep(delay);
+				long delay = TestMock.randomDelay();
+				if (delay > 0) {
+					Log.log(logger, "info", "Delay response %d for '%s' by %d ms", i, req.correlationId, delay);
+					Engine.sleep(delay);
+				}
 			}
 			Events.ServiceResponse resp = Events.ServiceResponse.ServiceResponse(
 				null /*extId String */,

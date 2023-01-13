@@ -5,4 +5,6 @@
   <properties name="MaxValue" ownerProjectName="AsyncService"/>
   <properties name="MinValue" ownerProjectName="AsyncService"/>
   <properties name="Value" ownerProjectName="AsyncService"/>
+  <properties name="LastReset" ownerProjectName="AsyncService"/>
+  <properties name="StartTime" ownerProjectName="AsyncService"/>
 </element:Scorecard>

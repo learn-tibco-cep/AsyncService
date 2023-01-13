@@ -71,5 +71,25 @@
             <constraint/>
             <modTime>1673376601852</modTime>
         </globalVariable>
+        <globalVariable>
+            <name>Optimized</name>
+            <value>false</value>
+            <type>Boolean</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1673561002163</modTime>
+        </globalVariable>
+        <globalVariable>
+            <name>ResetStats</name>
+            <value>true</value>
+            <type>Boolean</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1673577466012</modTime>
+        </globalVariable>
     </globalVariables>
 </repository>

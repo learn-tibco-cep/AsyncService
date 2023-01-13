@@ -11,26 +11,30 @@ void rulefunction RuleFunctions.fetchHandlerFromCache {
 	body {
 		Object logger = Log.getLogger("RuleFunctions.fetchHandlerFromCache");
 		
-		// load handler from cache
-		/* remove this optimization, which appears causing data loss on previously collected responses
+		Concepts.Handler h;
 		long startTime = System.currentTimeMillis();
-		Concepts.Handler h = Cluster.DataGrid.CacheLoadConceptByExtIdByUri(evt.correlationId, true, "/Concepts/Handler");
-		Stats.addStat("RetrieveHandler", System.currentTimeMillis() - startTime);
-		if (h == null) {
-			// This is an error if handler is not in cache
-			Log.log(logger, "info", "Ignore service response: Failed to load handler '%s'", evt.correlationId);
-			Event.consumeEvent(evt);
-			return;
+		
+		// load handler from cache
+		boolean optimized = System.getGlobalVariableAsBoolean("Agent/Optimized", false);		
+		if (optimized) {
+			// Note: this optimization, appears causing data loss on previously collected responses
+			h = Cluster.DataGrid.CacheLoadConceptByExtIdByUri(evt.correlationId, true, "/Concepts/Handler");
+			Stats.addStat("RetrieveHandler", System.currentTimeMillis() - startTime);
+			if (h == null) {
+				// This is an error if handler is not in cache
+				Log.log(logger, "error", "Ignore service response: Failed to load handler '%s'", evt.correlationId);
+				Event.consumeEvent(evt);
+				return;
+			}
+			if (h.expectedResponses <= 1) {
+				Log.log(logger, "info", "Loaded handler '%s' with no lock", h@extId);
+				return;
+			}
 		}
-		if (h.expectedResponses <= 1) {
-			Log.log(logger, "info", "Loaded handler '%s' with no lock", h@extId);
-			return;
-		}
-		*/
+		
 		// acquire lock on correlation ID
 		long lockWait = System.getGlobalVariableAsLong("Agent/LockWait", 50);
 		int lockRetry = System.getGlobalVariableAsInt("Agent/LockRetry", 3);
-		long startTime = System.currentTimeMillis();
 		boolean locked = RuleFunctions.acquireLock(evt.correlationId, lockWait, lockRetry, false);
 		if (!locked) {
 			Stats.addStat("FailedHandlerLock", System.currentTimeMillis() - startTime);
@@ -42,11 +46,11 @@ void rulefunction RuleFunctions.fetchHandlerFromCache {
 		Stats.addStat("AcquireHandlerLock", lockTime - startTime);
 		
 		// reload handler after lock
-		Concepts.Handler h = Cluster.DataGrid.CacheLoadConceptByExtIdByUri(evt.correlationId, true, "/Concepts/Handler");
+		h = Cluster.DataGrid.CacheLoadConceptByExtIdByUri(evt.correlationId, true, "/Concepts/Handler");
 		Stats.addStat("RetrieveLockedHandler", System.currentTimeMillis() - lockTime);
 		if (h == null) {
 			// Failed reload is an error.  should not come here
-			Log.log(logger, "info", "Ignore service response: Failed to load locked handler '%s'", evt.correlationId);
+			Log.log(logger, "error", "Ignore service response: Failed to load locked handler '%s'", evt.correlationId);
 			Event.consumeEvent(evt);
 			return;
 		}

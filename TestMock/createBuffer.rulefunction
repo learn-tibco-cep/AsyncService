@@ -1,0 +1,16 @@
+/**
+ * @description create concurrent map for buffered responses
+ */
+void rulefunction TestMock.createBuffer {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		
+	}
+	body {
+		Object logger = Log.getLogger("TestMock.createBuffer");
+		Collections.Map.Concurrent.createHashMapWithId("BUFFER");
+		Log.log(logger, "info", "Create BUFFER map for delayed responses");
+	}
+}

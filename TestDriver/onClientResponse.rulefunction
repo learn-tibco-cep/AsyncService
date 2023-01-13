@@ -27,7 +27,9 @@ void rulefunction TestDriver.onClientResponse {
 		// print out stats at configured stat counts
 		int count = Stats.getStatCount("Complete-ClientElapsed") + Stats.getStatCount("Timeout-ClientElapsed");
 		if (count % printStats == 0) {
-			Stats.printStats();
+			int minReset = Math.round(0.9 * printStats);
+			boolean reset = System.getGlobalVariableAsBoolean("Test/ResetStats", false);
+			Stats.printStats(reset, minReset);
 		}
 	}
 }

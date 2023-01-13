@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <cluster xmlns="http://tibco.com/businessevents/configuration/6.2">
     <revision>
-        <version>99</version>
+        <version>106</version>
         <author>yxu</author>
-        <date>2023/01/11 13:05:35</date>
+        <date>2023/01/12 19:50:08</date>
         <comment/>
     </revision>
     <name>Demo</name>
@@ -277,6 +277,30 @@
                     <encryption/>
                     <composite-indexes/>
                 </domain-object>
+                <domain-object>
+                    <mode>memory</mode>
+                    <uri>/TestMock/BufferedRequest</uri>
+                    <backing-store>
+                        <enabled>false</enabled>
+                        <table-name/>
+                        <properties>
+                            <property>
+                                <name>correlationId</name>
+                            </property>
+                            <property>
+                                <name>request</name>
+                            </property>
+                        </properties>
+                    </backing-store>
+                    <keys>
+                        <key/>
+                    </keys>
+                    <indexes>
+                        <index/>
+                    </indexes>
+                    <encryption/>
+                    <composite-indexes/>
+                </domain-object>
             </domain-objects>
             <backing-store>
                 <persistence-option>None</persistence-option>
@@ -517,8 +541,18 @@
                     <thread-affinity-rule-function/>
                     <uri>/Channels/FTLService/serviceRequest</uri>
                 </destination>
+                <destination id="bufferedRequest_6A37364E">
+                    <pre-processor>/TestMock/onBufferedRequest</pre-processor>
+                    <queue-size/>
+                    <thread-count/>
+                    <threading-model>shared-queue</threading-model>
+                    <thread-affinity-rule-function/>
+                    <uri>/TestMock/Local/bufferedRequest</uri>
+                </destination>
             </destinations>
-            <startup/>
+            <startup>
+                <uri>/TestMock/createBuffer</uri>
+            </startup>
             <shutdown/>
             <local-cache>
                 <eviction>
@@ -562,13 +596,13 @@
             <cache-storage-enabled>false</cache-storage-enabled>
             <db-concepts>false</db-concepts>
             <property-group>
-                <property name="tibco.clientVar.Agent/PrintStats" value="100"/>
                 <property name="tibco.clientVar.Agent/LockLocal" value="false"/>
                 <property name="tibco.clientVar.FTL/ResponseEndpoint" value="shared"/>
                 <property name="tibco.clientVar.FTL/ResponseDurable" value="ServiceResponse"/>
                 <property name="tibco.clientVar.Agent/RequestTimeout" value="10000"/>
                 <property name="tibco.clientVar.Agent/LockWait" value="100"/>
                 <property name="tibco.clientVar.Agent/SharedThreads" value="64"/>
+                <property name="tibco.clientVar.Agent/Optimized" value="false"/>
             </property-group>
         </processing-unit>
         <processing-unit id="test">
@@ -606,6 +640,7 @@
                 <property name="tibco.clientVar.Mock/SharedThreads" value="64"/>
                 <property name="tibco.clientVar.Mock/MinWait" value="30"/>
                 <property name="tibco.clientVar.Mock/MaxWait" value="70"/>
+                <property name="tibco.clientVar.Mock/BufferSize" value="0"/>
             </property-group>
         </processing-unit>
         <processing-unit id="cache">

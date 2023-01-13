@@ -3,23 +3,23 @@
     <globalVariables>
         <globalVariable>
             <name>MinWait</name>
-            <value>30</value>
+            <value>0</value>
             <type>Integer</type>
             <deploymentSettable>true</deploymentSettable>
             <serviceSettable>false</serviceSettable>
             <description/>
             <constraint/>
-            <modTime>1673367985953</modTime>
+            <modTime>1673580463332</modTime>
         </globalVariable>
         <globalVariable>
             <name>MaxWait</name>
-            <value>70</value>
+            <value>0</value>
             <type>Integer</type>
             <deploymentSettable>true</deploymentSettable>
             <serviceSettable>false</serviceSettable>
             <description/>
             <constraint/>
-            <modTime>1673368031476</modTime>
+            <modTime>1673580467168</modTime>
         </globalVariable>
         <globalVariable>
             <name>SharedThreads</name>
@@ -30,6 +30,16 @@
             <description/>
             <constraint/>
             <modTime>1673376545693</modTime>
+        </globalVariable>
+        <globalVariable>
+            <name>BufferSize</name>
+            <value>0</value>
+            <type>Integer</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1673580367860</modTime>
         </globalVariable>
     </globalVariables>
 </repository>
