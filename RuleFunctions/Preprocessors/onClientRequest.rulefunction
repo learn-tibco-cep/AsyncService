@@ -15,8 +15,7 @@ void rulefunction RuleFunctions.Preprocessors.onClientRequest {
 		// create a new collector to handle new client request
 		String extId = String.format("CR-%d", System.nanoTime());
 		Log.log(logger, "info", "Create handler '%s'", extId);
-		
-		long maxResp = System.getGlobalVariableAsLong("Agent/MaxResponseCount", 1);
+
 		Concepts.Handler h = Instance.newInstance("/Concepts/Handler", extId);
 		h.request = evt.message;
 		h.requestTime = evt.requestTime;
@@ -24,11 +23,30 @@ void rulefunction RuleFunctions.Preprocessors.onClientRequest {
 		h.status = "";
 		
 		Stats.addStat("ClientRequestDelay", h.receiptTime - h.requestTime);
-		if (maxResp > 1) {
-			h.expectedResponses = Math.ceil(Math.random() * maxResp);
+		
+		long preTest = System.getGlobalVariableAsLong("Agent/PreTests", 0);
+		
+		// check pre-test for stats reset
+		long preCount = Stats.getStatCount(Stats.Config.PreTest);
+		Stats.addStat(Stats.Config.PreTest, 1L);
+		long testCount = Stats.getStatCount(Stats.Config.PreTest);
+		Log.log(logger, "info", "Total test count %d", testCount);
+		if (preCount < preTest && testCount >= preTest) {
+			// initialize all stats after pre-tests
+			Stats.resetStats(0L);
 		}
-		if (h.expectedResponses < 1) {
+		
+		if (testCount < preTest) {
+			// use single response for pre-tests
 			h.expectedResponses = 1;
+		} else {
+			long maxResp = System.getGlobalVariableAsLong("Agent/MaxResponseCount", 1);
+			if (maxResp > 1) {
+				h.expectedResponses = Math.ceil(Math.random() * maxResp);
+			}
+			if (h.expectedResponses < 1) {
+				h.expectedResponses = 1;
+			}
 		}
 
 		// set event correlation for sending service request rule from rule

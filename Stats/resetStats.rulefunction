@@ -21,9 +21,23 @@ void rulefunction Stats.resetStats {
 			while (Collections.Iterator.hasNext(iter)) {
 				Object entry = Collections.Iterator.next(iter);
 				Object name = Collections.Map.Entry.getKey(entry);
+				if (name == Stats.Config.PreTest) {
+					// never reset pre-test counts
+					continue;
+				}
+				if (minCount <= 0) {
+					// initialize counts and timestamp
+					Collections.Map.Concurrent.replace(Collections.Map.get(repo, Stats.Config.LastReset), name, 0L);
+					Collections.Map.Concurrent.replace(Collections.Map.get(repo, Stats.Config.StartTime), name, System.currentTimeMillis());
+					Stats.removeStat(name);
+					Log.log(logger, "info", "Initialize stat of [%s]", name);
+					continue;
+				}
+				
+				// reset values but keep start-time and rollup count
 				long c = Collections.Map.Entry.getValue(entry);
 				if (c >= minCount) {
-					// record total count up to the reset
+					// roll total count up to the reset
 					Stats.increaseCount(Collections.Map.get(repo, Stats.Config.LastReset), name, c);
 					Stats.removeStat(name);
 					Log.log(logger, "info", "Reset stat of [%s]", name);

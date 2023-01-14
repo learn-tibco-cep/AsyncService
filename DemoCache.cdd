@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <cluster xmlns="http://tibco.com/businessevents/configuration/6.2">
     <revision>
-        <version>106</version>
+        <version>112</version>
         <author>yxu</author>
-        <date>2023/01/12 19:50:08</date>
+        <date>2023/01/13 19:08:47</date>
         <comment/>
     </revision>
     <name>Demo</name>
@@ -603,6 +603,8 @@
                 <property name="tibco.clientVar.Agent/LockWait" value="100"/>
                 <property name="tibco.clientVar.Agent/SharedThreads" value="64"/>
                 <property name="tibco.clientVar.Agent/Optimized" value="false"/>
+                <property name="tibco.clientVar.Agent/MaxResponseCount" value="3"/>
+                <property name="tibco.clientVar.Agent/PreTests" value="4000"/>
             </property-group>
         </processing-unit>
         <processing-unit id="test">
@@ -618,7 +620,7 @@
             <cache-storage-enabled>false</cache-storage-enabled>
             <db-concepts>false</db-concepts>
             <property-group>
-                <property name="tibco.clientVar.Test/RequestCount" value="5001"/>
+                <property name="tibco.clientVar.Test/RequestCount" value="6200"/>
                 <property name="tibco.clientVar.Test/RequestInterval" value="50"/>
                 <property name="tibco.clientVar.Test/Publishers" value="5"/>
             </property-group>

@@ -19,6 +19,7 @@ void rulefunction Stats.initializeStats {
 		Stats.Config.Value = "Value";
 		Stats.Config.LastReset = "Reset";
 		Stats.Config.StartTime = "Start";
+		Stats.Config.PreTest = "PreTest";
 		
 		// setup 4 concurrent maps for stats
 		Log.log(logger, "info", "Create stats repo '%s'", Stats.Config.MapId);

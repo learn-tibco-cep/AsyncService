@@ -7,4 +7,5 @@
   <properties name="Value" ownerProjectName="AsyncService"/>
   <properties name="LastReset" ownerProjectName="AsyncService"/>
   <properties name="StartTime" ownerProjectName="AsyncService"/>
+  <properties name="PreTest" ownerProjectName="AsyncService"/>
 </element:Scorecard>
