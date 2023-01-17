@@ -51,5 +51,15 @@
             <constraint/>
             <modTime>1673577498019</modTime>
         </globalVariable>
+        <globalVariable>
+            <name>SharedThreads</name>
+            <value>10</value>
+            <type>Integer</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1673991327132</modTime>
+        </globalVariable>
     </globalVariables>
 </repository>

@@ -11,5 +11,15 @@
             <constraint/>
             <modTime>1673199079047</modTime>
         </globalVariable>
+        <globalVariable>
+            <name>DiscoveryURL</name>
+            <value>localhost:47500..47510</value>
+            <type>String</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1673976818989</modTime>
+        </globalVariable>
     </globalVariables>
 </repository>

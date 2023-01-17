@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <cluster xmlns="http://tibco.com/businessevents/configuration/6.2">
     <revision>
-        <version>112</version>
+        <version>119</version>
         <author>yxu</author>
-        <date>2023/01/13 19:08:47</date>
+        <date>2023/01/17 14:36:48</date>
         <comment/>
     </revision>
     <name>Demo</name>
@@ -12,7 +12,7 @@
         <type>Ignite</type>
         <class>com.tibco.cep.ignite.cluster.IgniteClusterProvider</class>
         <properties>
-            <property name="discovery-url" value="%%Ignite/HostName%%:47500..47510"/>
+            <property name="discovery-url" value="%%Ignite/DiscoveryURL%%"/>
             <property name="listen-port" value="47500..47510"/>
             <property name="communication-port" value="47100..47110"/>
             <property name="socket-write-timeout" value="30000"/>
@@ -47,6 +47,7 @@
                 <property name="hostaware-hostname" value="localhost"/>
                 <property name="encryption-enable" value="false"/>
                 <property name="encryption.identity.file.path" value=""/>
+                <property name="read-from-backup" value="false"/>
             </properties>
             <security enabled="false">
                 <property name="ssl.trusted.certificate.folder.path" value=""/>
@@ -479,6 +480,7 @@
             </businessworks>
             <property-group>
                 <property name="be.engine.profile.inference-class.enable" value="true"/>
+                <property name="Agent.inference-class.threadcount" value="10"/>
             </property-group>
         </inference-agent-class>
         <inference-agent-class id="test-driver">
@@ -516,7 +518,7 @@
             </local-cache>
             <shared-queue>
                 <size>1024</size>
-                <workers>10</workers>
+                <workers>%%Test/SharedThreads%%</workers>
             </shared-queue>
             <load>
                 <max-active/>
@@ -623,6 +625,7 @@
                 <property name="tibco.clientVar.Test/RequestCount" value="6200"/>
                 <property name="tibco.clientVar.Test/RequestInterval" value="50"/>
                 <property name="tibco.clientVar.Test/Publishers" value="5"/>
+                <property name="tibco.clientVar.Mock/SharedThreads" value="24"/>
             </property-group>
         </processing-unit>
         <processing-unit id="mock">
@@ -678,6 +681,7 @@
             <property name="java.security.auth.login.config" value="/Users/yxu/tibco/be6/be/6.2/mm/config/jaas-config.config"/>
         </property-group>
         <property name="tibco.clientVar.FTL/Server_URL" value="http://localhost:8585"/>
+        <property name="tibco.clientVar.Ignite/DiscoveryURL" value="localhost:47500..47510"/>
         <property name="tibco.clientVar.Ignite/HostName" value="localhost"/>
     </property-group>
 </cluster>
