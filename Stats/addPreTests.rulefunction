@@ -1,0 +1,31 @@
+/**
+ * @description thread-safe increment of pre-test count
+ */
+void rulefunction Stats.addPreTests {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		long count;
+	}
+	body {
+		Object repo = Collections.Map.getMap(Stats.Config.MapId);
+		if (repo == null || Collections.Map.get(repo, Stats.Config.Count) == null) {
+			// ignore stats call if in-memory repo is not initialized
+			return;
+		}
+		
+		boolean done = false;
+		while (!done) {
+			Object c = Collections.Map.get(repo, Stats.Config.PreTest);
+			if (c == null) {
+				c = Collections.Map.Concurrent.putIfAbsent(repo, Stats.Config.PreTest, count);
+				if (c == null) {
+					return;
+				}
+			}
+			long v = c;  // convert count to long type
+			done = Collections.Map.Concurrent.replaceIfEqualToGivenValue(repo, Stats.Config.PreTest, c, v + count);
+		}
+	}
+}

@@ -1,0 +1,19 @@
+/**
+ * @description
+ */
+void rulefunction Stats.setLastEventTime {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+	}
+	body {
+		Object repo = Collections.Map.getMap(Stats.Config.MapId);
+		if (repo == null) {
+			// ignore stats call if in-memory repo is not initialized
+			return;
+		}
+		
+		Collections.Map.put(repo, Stats.Config.LastEvent, System.currentTimeMillis());
+	}
+}

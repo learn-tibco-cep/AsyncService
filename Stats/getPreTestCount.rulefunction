@@ -1,12 +1,11 @@
 /**
- * @description return counts of stats for a specified stat name.
+ * @description
  */
-long rulefunction Stats.getStatCount {
+long rulefunction Stats.getPreTestCount {
 	attribute {
 		validity = ACTION;
 	}
 	scope {
-		String name;
 	}
 	body {
 		Object repo = Collections.Map.getMap(Stats.Config.MapId);
@@ -14,10 +13,10 @@ long rulefunction Stats.getStatCount {
 			// ignore stats call if in-memory repo is not initialized
 			return 0L;
 		}
-
-		Object c = Collections.Map.get(Collections.Map.get(repo, Stats.Config.Count), name);
+		
+		Object c = Collections.Map.get(repo, Stats.Config.PreTest);
 		if (c == null) {
-			return 0;
+			return 0L;
 		}
 		long v = c;
 		return v;

@@ -1,5 +1,6 @@
 /**
  * @description for all stat with count greater than specified min, save the total count and then cleanup the stats.
+ *     reset the total count and timestamp as well if minCount <= 0, 
  */
 void rulefunction Stats.resetStats {
 	attribute {
@@ -15,20 +16,20 @@ void rulefunction Stats.resetStats {
 		String lockKey = "ResetStats";
 		if (Cluster.DataGrid.Lock(lockKey, 1000L, true)) {
 			Object repo = Collections.Map.getMap(Stats.Config.MapId);
+			
+			if (minCount <= 0) {
+				// initialize stats start timestamp
+				Collections.Map.put(repo, Stats.Config.StartTime, System.currentTimeMillis());
+			}
+			
 			Object entries = Collections.Map.entrySet(Collections.Map.get(repo, Stats.Config.Count));
-		
 			Object iter = Collections.iterator(entries);
 			while (Collections.Iterator.hasNext(iter)) {
 				Object entry = Collections.Iterator.next(iter);
 				Object name = Collections.Map.Entry.getKey(entry);
-				if (name == Stats.Config.PreTest) {
-					// never reset pre-test counts
-					continue;
-				}
 				if (minCount <= 0) {
-					// initialize counts and timestamp
+					// initialize reset count and stats
 					Collections.Map.Concurrent.replace(Collections.Map.get(repo, Stats.Config.LastReset), name, 0L);
-					Collections.Map.Concurrent.replace(Collections.Map.get(repo, Stats.Config.StartTime), name, System.currentTimeMillis());
 					Stats.removeStat(name);
 					Log.log(logger, "info", "Initialize stat of [%s]", name);
 					continue;

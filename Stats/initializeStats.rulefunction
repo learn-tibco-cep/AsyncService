@@ -20,15 +20,15 @@ void rulefunction Stats.initializeStats {
 		Stats.Config.LastReset = "Reset";
 		Stats.Config.StartTime = "Start";
 		Stats.Config.PreTest = "PreTest";
+		Stats.Config.LastEvent = "Last";
 		
 		// setup 4 concurrent maps for stats
 		Log.log(logger, "info", "Create stats repo '%s'", Stats.Config.MapId);
-		Object repo = Collections.Map.createHashMapWithId(Stats.Config.MapId);
+		Object repo = Collections.Map.Concurrent.createHashMapWithId(Stats.Config.MapId);
 		Collections.Map.put(repo, Stats.Config.Count, Collections.Map.Concurrent.createConcurrentHashMap());
 		Collections.Map.put(repo, Stats.Config.MaxValue, Collections.Map.Concurrent.createConcurrentHashMap());
 		Collections.Map.put(repo, Stats.Config.MinValue, Collections.Map.Concurrent.createConcurrentHashMap());
 		Collections.Map.put(repo, Stats.Config.Value, Collections.Map.Concurrent.createConcurrentHashMap());
 		Collections.Map.put(repo, Stats.Config.LastReset, Collections.Map.Concurrent.createConcurrentHashMap());
-		Collections.Map.put(repo, Stats.Config.StartTime, Collections.Map.Concurrent.createConcurrentHashMap());
 	}
 }

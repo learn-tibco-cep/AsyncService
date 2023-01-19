@@ -1,0 +1,24 @@
+/**
+ * @description
+ */
+long rulefunction Stats.getLastEventTime {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+	}
+	body {
+		Object repo = Collections.Map.getMap(Stats.Config.MapId);
+		if (repo == null || Collections.Map.get(repo, Stats.Config.LastEvent) == null) {
+			// ignore stats call if in-memory repo is not initialized
+			return 0L;
+		}
+		
+		Object c = Collections.Map.get(repo, Stats.Config.LastEvent);
+		if (c == null) {
+			return 0L;
+		}
+		long v = c;
+		return v;
+	}
+}

@@ -101,5 +101,15 @@
             <constraint/>
             <modTime>1673653888375</modTime>
         </globalVariable>
+        <globalVariable>
+            <name>StatsIdleTime</name>
+            <value>300000</value>
+            <type>Integer</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1674059159509</modTime>
+        </globalVariable>
     </globalVariables>
 </repository>

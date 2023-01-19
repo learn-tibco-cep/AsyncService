@@ -13,8 +13,13 @@ void rulefunction Stats.printStats {
 		Object logger = Log.getLogger("Stats.printStats");
 		
 		Object repo = Collections.Map.getMap(Stats.Config.MapId);
+		if (repo == null || Collections.Map.get(repo, Stats.Config.Count) == null) {
+			// ignore stats call if in-memory repo is not initialized
+			return;
+		}
+		long startTime = Collections.Map.get(repo, Stats.Config.StartTime);
+					
 		Object entries = Collections.Map.entrySet(Collections.Map.get(repo, Stats.Config.Count));
-		
 		Object iter = Collections.iterator(entries);
 		while (Collections.Iterator.hasNext(iter)) {
 			Object entry = Collections.Iterator.next(iter);
@@ -24,8 +29,8 @@ void rulefunction Stats.printStats {
 			double mx = Collections.Map.get(Collections.Map.get(repo, Stats.Config.MaxValue), name);
 			double mn = Collections.Map.get(Collections.Map.get(repo, Stats.Config.MinValue), name);
 			long r = Collections.Map.get(Collections.Map.get(repo, Stats.Config.LastReset), name);
-			long t = Collections.Map.get(Collections.Map.get(repo, Stats.Config.StartTime), name);
-			long elapsed = System.currentTimeMillis() - t;
+
+			long elapsed = System.currentTimeMillis() - startTime;
 			double rate = 1000.0 * (r + c) / elapsed;
 			Log.log(logger, "info", "[%s] reset: %d, elapsed: %d ms, rate: %.3f/s, count: %d, avg: %.3f, max: %.3f, min: %.3f", name, r, elapsed, rate, c, v/c, mx, mn);
 		}

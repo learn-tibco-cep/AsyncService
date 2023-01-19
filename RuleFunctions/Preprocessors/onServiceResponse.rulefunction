@@ -17,7 +17,13 @@ void rulefunction RuleFunctions.Preprocessors.onServiceResponse {
 		}
 		
 		long startTime = System.currentTimeMillis();
-		Stats.addStat("ServiceResponseDelay", startTime - evt.responseTime);
+		
+		// update performance stats if engine is configured for PrintStats
+		int printStats = System.getGlobalVariableAsInt("Agent/PrintStats", 0);
+		if (printStats > 0) {
+			Stats.addStat("ServiceResponseDelay", startTime - evt.responseTime);
+			Stats.setLastEventTime();
+		}
 		
 		boolean lockLocal = System.getGlobalVariableAsBoolean("Agent/LockLocal", true);
 		if (!lockLocal) {

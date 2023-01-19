@@ -8,4 +8,5 @@
   <properties name="LastReset" ownerProjectName="AsyncService"/>
   <properties name="StartTime" ownerProjectName="AsyncService"/>
   <properties name="PreTest" ownerProjectName="AsyncService"/>
+  <properties name="LastEvent" ownerProjectName="AsyncService"/>
 </element:Scorecard>

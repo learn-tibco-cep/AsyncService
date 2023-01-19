@@ -21,6 +21,7 @@ void rulefunction TestDriver.onClientResponse {
 			// disabled stats, so skip it
 			return;
 		}
+		
 		Stats.addStat(String.format("%s-ServerElapsed", evt.status), evt.responseTime - evt.receiptTime);
 		Stats.addStat(String.format("%s-ClientElapsed", evt.status), System.currentTimeMillis() - evt.requestTime);
 

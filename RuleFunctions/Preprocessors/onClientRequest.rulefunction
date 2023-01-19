@@ -22,21 +22,44 @@ void rulefunction RuleFunctions.Preprocessors.onClientRequest {
 		h.receiptTime = System.currentTimeMillis();
 		h.status = "";
 		
-		Stats.addStat("ClientRequestDelay", h.receiptTime - h.requestTime);
-		
-		long preTest = System.getGlobalVariableAsLong("Agent/PreTests", 0);
-		
-		// check pre-test for stats reset
-		long preCount = Stats.getStatCount(Stats.Config.PreTest);
-		Stats.addStat(Stats.Config.PreTest, 1L);
-		long testCount = Stats.getStatCount(Stats.Config.PreTest);
-		Log.log(logger, "info", "Total test count %d", testCount);
-		if (preCount < preTest && testCount >= preTest) {
-			// initialize all stats after pre-tests
-			Stats.resetStats(0L);
+		// check pre-tests
+		boolean isPreTest = false;
+		long maxPreTest = System.getGlobalVariableAsLong("Agent/PreTests", 0);
+		if (maxPreTest > 0) {
+			long preCount = Stats.getPreTestCount();
+			Stats.addPreTests(1L);
+			long testCount = Stats.getPreTestCount();
+			Log.log(logger, "info", "Total test count %d", testCount);
+			if (preCount < maxPreTest) {
+				if (testCount >= maxPreTest) {
+					// initialize all stats after pre-tests
+					Stats.resetStats(0L);
+				} else {
+					isPreTest = true;
+				}
+			}
+		}
+
+		// update performance stats if engine is configured for PrintStats
+		int printStats = System.getGlobalVariableAsInt("Agent/PrintStats", 0);
+		if (printStats > 0) {
+			// initialize stats after long idle time
+			long maxIdleTime = System.getGlobalVariableAsLong("Agent/StatsIdleTime", 0);
+			Log.log(logger, "debug", "Check idle time: %d < %d - %d", maxIdleTime, System.currentTimeMillis(), Stats.getLastEventTime());
+			if (maxIdleTime > 0) {
+				long lastEvent = Stats.getLastEventTime();
+				if (lastEvent > 0 && System.currentTimeMillis() > lastEvent + maxIdleTime) {
+					// initialize all stats if system has been idle for long period
+					Log.log(logger, "info", "Initialize stats for new set of tests");
+					Stats.resetStats(0L);
+				}
+			}
+			// update client request stat
+			Stats.addStat("ClientRequestDelay", h.receiptTime - h.requestTime);
+			Stats.setLastEventTime();
 		}
 		
-		if (testCount < preTest) {
+		if (isPreTest) {
 			// use single response for pre-tests
 			h.expectedResponses = 1;
 		} else {

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <cluster xmlns="http://tibco.com/businessevents/configuration/6.2">
     <revision>
-        <version>119</version>
+        <version>121</version>
         <author>yxu</author>
-        <date>2023/01/17 14:36:48</date>
+        <date>2023/01/18 14:35:25</date>
         <comment/>
     </revision>
     <name>Demo</name>
@@ -363,7 +363,7 @@
                 <dir>logs</dir>
                 <name/>
                 <max-number>10</max-number>
-                <max-size>50000000</max-size>
+                <max-size>100000000</max-size>
                 <append>false</append>
             </files>
             <terminal>
@@ -385,8 +385,8 @@
                 <enabled>true</enabled>
                 <dir>logs</dir>
                 <name>test</name>
-                <max-number/>
-                <max-size/>
+                <max-number>10</max-number>
+                <max-size>50000000</max-size>
                 <append>false</append>
             </files>
             <terminal>
@@ -408,8 +408,8 @@
                 <enabled>true</enabled>
                 <dir>logs</dir>
                 <name>mock</name>
-                <max-number/>
-                <max-size/>
+                <max-number>10</max-number>
+                <max-size>50000000</max-size>
                 <append>false</append>
             </files>
             <terminal>
@@ -479,7 +479,7 @@
                 <uri/>
             </businessworks>
             <property-group>
-                <property name="be.engine.profile.inference-class.enable" value="true"/>
+                <property name="be.engine.profile.inference-class.enable" value="false"/>
                 <property name="Agent.inference-class.threadcount" value="10"/>
             </property-group>
         </inference-agent-class>
@@ -623,9 +623,9 @@
             <db-concepts>false</db-concepts>
             <property-group>
                 <property name="tibco.clientVar.Test/RequestCount" value="6200"/>
-                <property name="tibco.clientVar.Test/RequestInterval" value="50"/>
-                <property name="tibco.clientVar.Test/Publishers" value="5"/>
-                <property name="tibco.clientVar.Mock/SharedThreads" value="24"/>
+                <property name="tibco.clientVar.Test/RequestInterval" value="20"/>
+                <property name="tibco.clientVar.Test/Publishers" value="10"/>
+                <property name="tibco.clientVar.Test/SharedThreads" value="24"/>
             </property-group>
         </processing-unit>
         <processing-unit id="mock">
