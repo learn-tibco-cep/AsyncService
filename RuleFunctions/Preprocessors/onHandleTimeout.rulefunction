@@ -52,7 +52,7 @@ void rulefunction RuleFunctions.Preprocessors.onHandleTimeout {
 		
 		// In principle, the state-machine should take over to complete the other timeout tasks.
 		// However, most of the timeout cases are due to misteriously inactive state-machines.
-		// To work around the problem, we continue to perform the resst of actions as in state-machine here.
+		// To work around the problem, we continue to perform the rest of actions as in state-machine here.
 		
 		// set status for client response
 		if (h.expectedResponses <= h.responses@length) {
