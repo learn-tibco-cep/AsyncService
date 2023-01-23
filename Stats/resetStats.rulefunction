@@ -39,7 +39,7 @@ void rulefunction Stats.resetStats {
 				long c = Collections.Map.Entry.getValue(entry);
 				if (c >= minCount) {
 					// roll total count up to the reset
-					Stats.increaseCount(Collections.Map.get(repo, Stats.Config.LastReset), name, c);
+					Stats.rollupResetCount(repo, name, c);
 					Stats.removeStat(name);
 					Log.log(logger, "info", "Reset stat of [%s]", name);
 				}

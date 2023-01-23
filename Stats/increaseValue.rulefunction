@@ -6,16 +6,23 @@ void rulefunction Stats.increaseValue {
 		validity = ACTION;
 	}
 	scope {
-		Object cMap;
+		Object repo;
 		String name;
 		double value;		
 	}
 	body {
+		Object logger = Log.getLogger("Stats.increaseValue");
 		boolean done = false;
 		while (!done) {
-			Object c = Collections.Map.get(cMap, name);
-			double v = c;  // convert c to double type
-			done = Collections.Map.Concurrent.replaceIfEqualToGivenValue(cMap, name, c, v + value);
+			Object cMap = Collections.Map.get(repo, Stats.Config.Value);
+			try {
+				Object c = Collections.Map.get(cMap, name);
+				double v = c;  // convert c to double type
+				done = Collections.Map.Concurrent.replaceIfEqualToGivenValue(cMap, name, c, v + value);
+			} catch (Exception e) {
+				Log.log(logger, "warn", "Dropped name: %s, value: %f due to exception: %s", name, value, e@message);
+				break;
+			}
 		}		
 	}
 }

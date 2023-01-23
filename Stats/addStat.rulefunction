@@ -37,10 +37,10 @@ void rulefunction Stats.addStat {
 			Collections.Map.Concurrent.putIfAbsent(Collections.Map.get(repo, Stats.Config.LastReset), name, 0L);
 		} else {
 			// update existing stat value
-			Stats.increaseCount(Collections.Map.get(repo, Stats.Config.Count), name, 1L);
-			Stats.increaseValue(Collections.Map.get(repo, Stats.Config.Value), name, value);
-			Stats.setMaxValue(Collections.Map.get(repo, Stats.Config.MaxValue), name, value);
-			Stats.setMinValue(Collections.Map.get(repo, Stats.Config.MinValue), name, value);
+			Stats.increaseCount(repo, name, 1L);
+			Stats.increaseValue(repo, name, value);
+			Stats.setMaxValue(repo, name, value);
+			Stats.setMinValue(repo, name, value);
 		}
 	}
 }

@@ -1,7 +1,7 @@
 /**
  * @description thread-safe increment of a stat count
  */
-void rulefunction Stats.increaseCount {
+void rulefunction Stats.rollupResetCount {
 	attribute {
 		validity = ACTION;
 	}
@@ -11,10 +11,10 @@ void rulefunction Stats.increaseCount {
 		long count;
 	}
 	body {
-		Object logger = Log.getLogger("Stats.increaseCount");
+		Object logger = Log.getLogger("Stats.rollupResetCount");
 		boolean done = false;
 		while (!done) {
-			Object cMap = Collections.Map.get(repo, Stats.Config.Count);
+			Object cMap = Collections.Map.get(repo, Stats.Config.LastReset);
 			try {
 				Object c = Collections.Map.get(cMap, name);
 				long v = c;  // convert count to long type

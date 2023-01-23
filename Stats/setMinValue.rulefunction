@@ -6,19 +6,26 @@ void rulefunction Stats.setMinValue {
 		validity = ACTION;
 	}
 	scope {
-		Object cMap;
+		Object repo;
 		String name;
 		double value;						
 	}
 	body {
+		Object logger = Log.getLogger("Stats.setMinValue");
 		boolean done = false;
 		while (!done) {
-			Object c = Collections.Map.get(cMap, name);
-			double v = c;  // convert c to double type
-			if (value >= v) {
-				return;
+			Object cMap = Collections.Map.get(repo, Stats.Config.MinValue);
+			try {
+				Object c = Collections.Map.get(cMap, name);
+				double v = c;  // convert c to double type
+				if (value >= v) {
+					return;
+				}
+				done = Collections.Map.Concurrent.replaceIfEqualToGivenValue(cMap, name, c, value);
+			} catch (Exception e) {
+				Log.log(logger, "warn", "Dropped name: %s, value: %f due to exception: %s", name, value, e@message);
+				break;
 			}
-			done = Collections.Map.Concurrent.replaceIfEqualToGivenValue(cMap, name, c, value);
 		}		
 	}
 }
