@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<states:StateMachine xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:designtime="http:///com/tibco/cep/designtime/core/model/designtime_ontology.ecore" xmlns:states="http:///com/tibco/cep/designtime/core/model/states" folder="/Concepts/" name="HandlerStateMain" description="" GUID="7208B1AB-0795-0671-686F-84E252E67D74" ownerProjectName="AsyncService" main="true" ownerConceptPath="/Concepts/Handler">
+<states:StateMachine xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:designtime="http:///com/tibco/cep/designtime/core/model/designtime_ontology.ecore" xmlns:states="http:///com/tibco/cep/designtime/core/model/states" folder="/Concepts/" name="HandlerStateMain" description="" GUID="7208B1AB-0795-0671-686F-84E252E67D74" ownerProjectName="AsyncService" ownerStateMachinePath="/Concepts/HandlerStateMain" main="true" ownerConceptPath="/Concepts/Handler">
   <extendedProperties>
     <properties xsi:type="designtime:ObjectProperty" name="Backing Store">
       <value xsi:type="designtime:PropertyMap">
@@ -17,6 +17,16 @@
       </value>
     </properties>
   </extendedProperties>
+  <entryAction folder="/Concepts" name="HandlerStateMain_entryAction" ownerProjectName="AsyncService" actionText="" conditionText="">
+    <symbols>
+      <symbolList idName="handler" type="/Concepts/Handler"/>
+    </symbols>
+  </entryAction>
+  <exitAction folder="/Concepts" name="HandlerStateMain_exitAction" ownerProjectName="AsyncService" actionText="" conditionText="">
+    <symbols>
+      <symbolList idName="handler" type="/Concepts/Handler"/>
+    </symbols>
+  </exitAction>
   <timeoutAction name="HandlerStateMain_timeoutAction" ownerProjectName="AsyncService" actionText="" conditionText="">
     <symbols>
       <symbolList idName="handler" type="/Concepts/Handler"/>
@@ -36,18 +46,28 @@
       </properties>
       <properties xsi:type="designtime:SimpleProperty" name="index" value="false"/>
     </extendedProperties>
+    <entryAction folder="/Concepts" name="HandlerStateMain_Start_entryAction" ownerProjectName="AsyncService" actionText="" conditionText="">
+      <symbols>
+        <symbolList idName="handler" type="/Concepts/Handler"/>
+      </symbols>
+    </entryAction>
     <exitAction name="HandlerStateMain_Start_exitAction" ownerProjectName="AsyncService" actionText="" conditionText="">
       <symbols>
         <symbolList idName="handler" type="/Concepts/Handler"/>
       </symbols>
     </exitAction>
+    <timeoutAction folder="/Concepts" name="HandlerStateMain_Start_timeoutAction" ownerProjectName="AsyncService" actionText="" conditionText="">
+      <symbols>
+        <symbolList idName="handler" type="/Concepts/Handler"/>
+      </symbols>
+    </timeoutAction>
     <timeoutExpression name="HandlerStateMain_Start_timeoutExpression" ownerProjectName="AsyncService" returnType="long" actionText="return 0;" conditionText="" validity="CONDITION">
       <symbols>
         <symbolList idName="handler" type="/Concepts/Handler"/>
       </symbols>
     </timeoutExpression>
   </stateEntities>
-  <stateEntities xsi:type="states:StateEnd" name="End" GUID="527DC943-B53D-D0BD-C211-8F9FA2FDA56F" ownerStateMachinePath="/Concepts/HandlerStateMain" incomingTransitions="//@stateTransitions.1 //@stateTransitions.3">
+  <stateEntities xsi:type="states:StateEnd" name="End" GUID="527DC943-B53D-D0BD-C211-8F9FA2FDA56F" ownerStateMachinePath="/Concepts/HandlerStateMain" incomingTransitions="//@stateTransitions.1">
     <extendedProperties>
       <properties xsi:type="designtime:ObjectProperty" name="Backing Store">
         <value xsi:type="designtime:PropertyMap">
@@ -56,18 +76,28 @@
       </properties>
       <properties xsi:type="designtime:SimpleProperty" name="index" value="false"/>
     </extendedProperties>
-    <entryAction name="HandlerStateMain_End_entryAction" ownerProjectName="AsyncService" actionText="Object logger = Log.getLogger(&quot;HandlerStateMain.End&quot;);&#xA;RuleFunctions.updateStats(handler);&#xA;Log.log(logger, &quot;info&quot;, &quot;Cleanup handler '%s'&quot;, handler@extId);&#xA;Instance.deleteInstance(handler);" conditionText="">
+    <entryAction name="HandlerStateMain_End_entryAction" ownerProjectName="AsyncService" actionText="Object logger = Log.getLogger(&quot;HandlerStateMain.End&quot;);&#xA;Log.log(logger, &quot;info&quot;, &quot;Handler '%s' lifecycle end&quot;, handler@extId);" conditionText="">
       <symbols>
         <symbolList idName="handler" type="/Concepts/Handler"/>
       </symbols>
     </entryAction>
+    <exitAction folder="/Concepts" name="HandlerStateMain_End_exitAction" ownerProjectName="AsyncService" actionText="" conditionText="">
+      <symbols>
+        <symbolList idName="handler" type="/Concepts/Handler"/>
+      </symbols>
+    </exitAction>
+    <timeoutAction folder="/Concepts" name="HandlerStateMain_End_timeoutAction" ownerProjectName="AsyncService" actionText="" conditionText="">
+      <symbols>
+        <symbolList idName="handler" type="/Concepts/Handler"/>
+      </symbols>
+    </timeoutAction>
     <timeoutExpression name="HandlerStateMain_End_timeoutExpression" ownerProjectName="AsyncService" returnType="long" actionText="return 0;" conditionText="" validity="CONDITION">
       <symbols>
         <symbolList idName="handler" type="/Concepts/Handler"/>
       </symbols>
     </timeoutExpression>
   </stateEntities>
-  <stateEntities xsi:type="states:StateSimple" name="Pending" GUID="7C9912B0-F761-A75F-C06B-9C9502F01F8A" incomingTransitions="//@stateTransitions.0 //@stateTransitions.2" outgoingTransitions="//@stateTransitions.1 //@stateTransitions.2" timeoutStateGUID="2C85B9F7-42A3-12DF-A5BD-0073EE63BDB4" timeoutPolicy="2" timeoutState="//@stateEntities.3">
+  <stateEntities xsi:type="states:StateSimple" name="Pending" GUID="7C9912B0-F761-A75F-C06B-9C9502F01F8A" ownerStateMachinePath="/Concepts/HandlerStateMain" incomingTransitions="//@stateTransitions.0 //@stateTransitions.2" outgoingTransitions="//@stateTransitions.1 //@stateTransitions.2" timeoutStateGUID="527DC943-B53D-D0BD-C211-8F9FA2FDA56F" timeoutPolicy="2" timeoutState="//@stateEntities.1">
     <extendedProperties>
       <properties xsi:type="designtime:ObjectProperty" name="Backing Store">
         <value xsi:type="designtime:PropertyMap">
@@ -86,42 +116,12 @@
         <symbolList idName="handler" type="/Concepts/Handler"/>
       </symbols>
     </exitAction>
-    <timeoutAction name="HandlerStateMain_Pending_timeoutAction" ownerProjectName="AsyncService" actionText="Object logger = Log.getLogger(&quot;HandlerStateMain.Pending&quot;);&#xA;Log.log(logger, &quot;info&quot;, &quot;Handler '%s' timeout&quot;, handler@extId);&#xA;&#xA;// dispatch timeout actions to a local thread to execute in preprocessor context&#xA;Events.HandleTimeout evt = Events.HandleTimeout.HandleTimeout(null, null, handler@extId);&#xA;Event.sendEvent(evt);&#xA;" conditionText="">
+    <timeoutAction name="HandlerStateMain_Pending_timeoutAction" ownerProjectName="AsyncService" actionText="Object logger = Log.getLogger(&quot;HandlerStateMain.Pending&quot;);&#xA;Log.log(logger, &quot;info&quot;, &quot;Handler '%s' timeout&quot;, handler@extId);&#xA;&#xA;// dispatch timeout actions to a local thread to acquire a lock before procesing timeout&#xA;handler.status = &quot;Timeout&quot;;&#xA;Events.HandlerExit evt = Events.HandlerExit.HandlerExit(null, null, handler@extId, handler.status);&#xA;Event.sendEvent(evt);&#xA;" conditionText="">
       <symbols>
         <symbolList idName="handler" type="/Concepts/Handler"/>
       </symbols>
     </timeoutAction>
     <timeoutExpression name="HandlerStateMain_Pending_timeoutExpression" ownerProjectName="AsyncService" returnType="long" actionText="long waitMs = System.getGlobalVariableAsLong(&quot;Agent/RequestTimeout&quot;, 5000);&#xA;return waitMs;" conditionText="" validity="CONDITION">
-      <symbols>
-        <symbolList idName="handler" type="/Concepts/Handler"/>
-      </symbols>
-    </timeoutExpression>
-  </stateEntities>
-  <stateEntities xsi:type="states:StateSimple" name="Timeout" GUID="2C85B9F7-42A3-12DF-A5BD-0073EE63BDB4" outgoingTransitions="//@stateTransitions.3">
-    <extendedProperties>
-      <properties xsi:type="designtime:ObjectProperty" name="Backing Store">
-        <value xsi:type="designtime:PropertyMap">
-          <properties xsi:type="designtime:SimpleProperty" name="Column Name" value=""/>
-        </value>
-      </properties>
-      <properties xsi:type="designtime:SimpleProperty" name="index" value="false"/>
-    </extendedProperties>
-    <entryAction name="HandlerStateMain_Timeout_entryAction" ownerProjectName="AsyncService" actionText="" conditionText="">
-      <symbols>
-        <symbolList idName="handler" type="/Concepts/Handler"/>
-      </symbols>
-    </entryAction>
-    <exitAction name="HandlerStateMain_Timeout_exitAction" ownerProjectName="AsyncService" actionText="" conditionText="">
-      <symbols>
-        <symbolList idName="handler" type="/Concepts/Handler"/>
-      </symbols>
-    </exitAction>
-    <timeoutAction name="HandlerStateMain_Timeout_timeoutAction" ownerProjectName="AsyncService" actionText="" conditionText="">
-      <symbols>
-        <symbolList idName="handler" type="/Concepts/Handler"/>
-      </symbols>
-    </timeoutAction>
-    <timeoutExpression name="HandlerStateMain_Timeout_timeoutExpression" ownerProjectName="AsyncService" returnType="long" actionText="return 0;" conditionText="" validity="CONDITION">
       <symbols>
         <symbolList idName="handler" type="/Concepts/Handler"/>
       </symbols>
@@ -135,7 +135,7 @@
     </guardRule>
   </stateTransitions>
   <stateTransitions name="Transition_1" GUID="7CFADF69-48B3-2929-9B21-A846CCA1BCF1" ownerProjectName="AsyncService" ownerStateMachinePath="/Concepts/HandlerStateMain" toState="//@stateEntities.1" fromState="//@stateEntities.2" label="">
-    <guardRule name="HandlerStateMain_Transition_1_guardRule" ownerProjectName="AsyncService" actionText="RuleFunctions.sendClientResponse(handler);" conditionText="handler.status == &quot;Complete&quot;;" priority="5">
+    <guardRule name="HandlerStateMain_Transition_1_guardRule" ownerProjectName="AsyncService" actionText="Object logger = Log.getLogger(&quot;HandlerStateMain.ToEnd&quot;);&#xA;Log.log(logger, &quot;info&quot;, &quot;Handler '%s' complete&quot;, handler@extId);&#xA;&#xA;// assert handler exit event to invoke rule to send client reponse and cleanup the handler&#xA;Events.HandlerExit evt = Events.HandlerExit.HandlerExit(null, null, handler@extId, handler.status);&#xA;Event.assertEvent(evt);&#xA;" conditionText="handler.status == &quot;Complete&quot;;" priority="5">
       <symbols>
         <symbolList idName="handler" type="/Concepts/Handler"/>
       </symbols>
@@ -146,14 +146,6 @@
       <symbols>
         <symbolList idName="handler" type="/Concepts/Handler"/>
         <symbolList idName="resp" type="/Events/ServiceResponse"/>
-      </symbols>
-    </guardRule>
-  </stateTransitions>
-  <stateTransitions name="Transition_3" GUID="B9D9268E-9871-72E0-AAFA-860DC8B45C05" ownerProjectName="AsyncService" ownerStateMachinePath="/Concepts/HandlerStateMain" toState="//@stateEntities.1" fromState="//@stateEntities.3" label="">
-    <guardRule name="HandlerStateMain_Transition_3_guardRule" ownerProjectName="AsyncService" actionText="Object logger = Log.getLogger(&quot;HandlerStateMain.Timeout&quot;);&#xA;// set status for client response&#xA;if (handler.expectedResponses &lt;= handler.responses@length) {&#xA;&#x9;// small possibility to get here, since the event is triggered by state timeout&#xA;&#x9;handler.status = &quot;Complete&quot;;&#xA;} else {&#xA;&#x9;handler.status = &quot;Timeout&quot;;&#xA;}&#xA;Log.log(logger, &quot;info&quot;, &quot;Updated handler '%s' status to [%s]&quot;, handler@extId, handler.status);&#xA;&#xA;RuleFunctions.sendClientResponse(handler);" conditionText="handler@extId == handletimeout.correlationId;" priority="5">
-      <symbols>
-        <symbolList idName="handler" type="/Concepts/Handler"/>
-        <symbolList idName="handletimeout" type="/Events/HandleTimeout"/>
       </symbols>
     </guardRule>
   </stateTransitions>

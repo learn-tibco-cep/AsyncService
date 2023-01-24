@@ -37,6 +37,7 @@ void rulefunction RuleFunctions.Preprocessors.onServiceResponse {
 		int lockRetry = System.getGlobalVariableAsInt("Agent/LockRetry", 3);
 		boolean locked = RuleFunctions.acquireLock(evt.correlationId, lockWait, lockRetry, lockLocal);
 		if (!locked) {
+			Stats.addStat("FailedHandlerLock", System.currentTimeMillis() - startTime);
 			Log.log(logger, "info", "Ignore service response: Failed lock on '%s'", evt.correlationId);
 			Event.consumeEvent(evt);
 			return;

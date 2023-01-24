@@ -92,57 +92,67 @@ On a MacBook Pro with 8-Core Intel Core i9 processor, this application printed o
 
 ### Single Inference Engine
 
-The test driver received `0.2%` of timeout errors due to race conditions when service response is processed before the original client request is committed.  For the other `99.8%` of successful responses, the server elapsed time is `1.8 ms` on average.
+For a test that each client request expects 1 to 5 service responses, or average of 3 service responses per client request, the test driver printed the following stats after 2500 client requests. The handlers on the server elapsed `2.3 ms` on average.
 
 ```
-[Complete-ServerElapsed] count: 2993, avg: 1.800, max: 81.000, min: 0.000
-[Complete-ClientElapsed] count: 2994, avg: 3.215, max: 84.000, min: 1.000
-[Timeout-ServerElapsed] count: 6, avg: 5014.000, max: 5043.000, min: 5004.000
-[Timeout-ClientElapsed] count: 6, avg: 5023.167, max: 5045.000, min: 5006.000
+[Complete-ServerElapsed] reset: 2500, elapsed: 23858 ms, rate: 125.744/s, count: 500, avg: 2.318, max: 10.000, min: 0.000
+[Complete-ClientElapsed] reset: 2500, elapsed: 23859 ms, rate: 125.739/s, count: 500, avg: 3.822, max: 13.000, min: 1.000
 ```
 
-More detailed stats from the handler state machine is as follows:
+More detailed stats from the handler state machine is as follows, which shows not only the end-to-end elapsed time, but also message delays on the FTL endpoint, load and lock time for handler objects, etc.
 
 ```
-[ServiceElapsed] count: 8982, avg: 0.088, max: 4.000, min: 0.000
-[ServiceEnd2End] count: 8982, avg: 1.511, max: 81.000, min: 0.000
-[Complete-ExpectedResponses] count: 2995, avg: 2.998, max: 5.000, min: 1.000
-[Complete-HandleElapsed] count: 2994, avg: 1.799, max: 81.000, min: 0.000
-[Timeout-ExpectedResponses] count: 6, avg: 3.333, max: 5.000, min: 1.000
-[Timeout-HandleElapsed] count: 6, avg: 5014.000, max: 5043.000, min: 5004.000
+[ClientRequestDelay] reset: 2004, elapsed: 19885 ms, rate: 125.924/s, count: 500, avg: 0.890, max: 28.000, min: 0.000
+[SendServiceRequest] reset: 2004, elapsed: 19885 ms, rate: 125.924/s, count: 500, avg: 0.576, max: 4.000, min: 0.000
+[ServiceElapsed] reset: 6045, elapsed: 19885 ms, rate: 380.840/s, count: 1528, avg: 0.096, max: 1.000, min: 0.000
+[ServiceEnd2End] reset: 6045, elapsed: 19885 ms, rate: 380.840/s, count: 1528, avg: 1.902, max: 38.000, min: 0.000
+[AcquireHandlerLock] reset: 6046, elapsed: 19885 ms, rate: 380.890/s, count: 1528, avg: 0.393, max: 33.000, min: 0.000
+[RetrieveHandler] reset: 6046, elapsed: 19885 ms, rate: 380.890/s, count: 1528, avg: 0.007, max: 1.000, min: 0.000
+[ServiceResponseDelay] reset: 6046, elapsed: 19885 ms, rate: 380.840/s, count: 1527, avg: 0.496, max: 2.000, min: 0.000
+[Complete-HandleElapsed] reset: 2003, elapsed: 19885 ms, rate: 125.874/s, count: 500, avg: 2.344, max: 38.000, min: 1.000
+[Complete-ExpectedResponses] reset: 2003, elapsed: 19885 ms, rate: 125.874/s, count: 500, avg: 3.056, max: 5.000, min: 1.000
 ```
 
 ### Two Inference Engines
 
 When 2 inference engines are deployed, each engine will process only half of the client requests.  Although the elapsed time for processing each request is similar to that of the single engine deployment, the total throughput would be doubled because the load is evenly distributed by 2 workers.
 
-The stats printed by the test driver:
+The test driver prints out the following stats.  It shows that 0.57% of the requests timed out due to race conditions that a service response is received before its handler concept is available.  Such race condition depends on the post RTC activities for sending outbound events and updating handler concepts.  Due to parallel processing, it is not garanteed that service request will be sent out after the handler concept is updated.  Such race condition can be better handled by adding a retry in the preprocessor function `onServiceResponse` when it failed to load the handler concept for the response event.  The current implementation simply drops the response event in such race condition, and thus leads to false timeout of the handler.
 
 ```
-[Complete-ServerElapsed] count: 2986, avg: 1.939, max: 22.000, min: 0.000
-[Complete-ClientElapsed] count: 2986, avg: 3.371, max: 41.000, min: 1.000
-[Timeout-ServerElapsed] count: 14, avg: 5006.357, max: 5015.000, min: 5002.000
-[Timeout-ClientElapsed] count: 14, avg: 5012.071, max: 5027.000, min: 5004.000
+[Complete-ServerElapsed] reset: 2476, elapsed: 23730 ms, rate: 124.947/s, count: 489, avg: 2.413, max: 39.000, min: 1.000
+[Complete-ClientElapsed] reset: 2475, elapsed: 23730 ms, rate: 124.905/s, count: 489, avg: 4.057, max: 41.000, min: 1.000
+[Timeout-ServerElapsed] reset: 0, elapsed: 23730 ms, rate: 0.464/s, count: 11, avg: 5005.818, max: 5013.000, min: 5003.000
+[Timeout-ClientElapsed] reset: 0, elapsed: 23730 ms, rate: 0.464/s, count: 11, avg: 5007.545, max: 5015.000, min: 5004.000
 ```
 
 The detailed stats printed by the inference engine 1:
 
 ```
-[ServiceElapsed] count: 4466, avg: 0.090, max: 5.000, min: 0.000
-[ServiceEnd2End] count: 4466, avg: 1.647, max: 21.000, min: 0.000
-[Complete-ExpectedResponses] count: 1493, avg: 2.989, max: 5.000, min: 1.000
-[Complete-HandleElapsed] count: 1493, avg: 1.922, max: 22.000, min: 0.000
-[Timeout-ExpectedResponses] count: 7, avg: 3.143, max: 5.000, min: 1.000
-[Timeout-HandleElapsed] count: 7, avg: 5006.286, max: 5011.000, min: 5003.000
+[ClientRequestDelay] reset: 1000, elapsed: 23926 ms, rate: 62.484/s, count: 495, avg: 0.871, max: 18.000, min: 0.000
+[SendServiceRequest] reset: 1000, elapsed: 23926 ms, rate: 62.484/s, count: 495, avg: 0.539, max: 5.000, min: 0.000
+[ServiceElapsed] reset: 2911, elapsed: 23926 ms, rate: 181.852/s, count: 1440, avg: 0.101, max: 1.000, min: 0.000
+[ServiceEnd2End] reset: 2911, elapsed: 23926 ms, rate: 181.852/s, count: 1440, avg: 1.984, max: 39.000, min: 0.000
+[AcquireHandlerLock] reset: 5898, elapsed: 23926 ms, rate: 372.147/s, count: 3006, avg: 0.232, max: 5.000, min: 0.000
+[RetrieveHandler] reset: 5890, elapsed: 23925 ms, rate: 371.661/s, count: 3002, avg: 0.006, max: 1.000, min: 0.000
+[RetrieveExitHandler] reset: 0, elapsed: 23926 ms, rate: 0.502/s, count: 12, avg: 0.000, max: 0.000, min: 0.000
+[ServiceResponseDelay] reset: 5889, elapsed: 23927 ms, rate: 371.505/s, count: 3000, avg: 0.617, max: 3.000, min: 0.000
+[Complete-HandleElapsed] reset: 990, elapsed: 23926 ms, rate: 61.774/s, count: 488, avg: 2.398, max: 39.000, min: 1.000
+[Complete-ExpectedResponses] reset: 990, elapsed: 23927 ms, rate: 61.771/s, count: 488, avg: 2.939, max: 5.000, min: 1.000
+[Timeout-HandleElapsed] reset: 0, elapsed: 23926 ms, rate: 0.502/s, count: 12, avg: 5005.750, max: 5013.000, min: 5003.000
+[Timeout-ExpectedResponses] reset: 0, elapsed: 23926 ms, rate: 0.502/s, count: 12, avg: 2.917, max: 5.000, min: 1.000
 ```
 
 The detailed stats printed by the inference engine 2:
 
 ```
-[ServiceElapsed] count: 4474, avg: 0.083, max: 1.000, min: 0.000
-[ServiceEnd2End] count: 4474, avg: 1.668, max: 22.000, min: 0.000
-[Complete-ExpectedResponses] count: 1493, avg: 2.997, max: 5.000, min: 1.000
-[Complete-HandleElapsed] count: 1493, avg: 1.956, max: 22.000, min: 0.000
-[Timeout-ExpectedResponses] count: 7, avg: 2.714, max: 5.000, min: 1.000
-[Timeout-HandleElapsed] count: 7, avg: 5006.429, max: 5015.000, min: 5002.000
+[ClientRequestDelay] reset: 1000, elapsed: 24170 ms, rate: 62.019/s, count: 499, avg: 0.910, max: 19.000, min: 0.000
+[SendServiceRequest] reset: 1000, elapsed: 24170 ms, rate: 62.060/s, count: 500, avg: 0.610, max: 6.000, min: 0.000
+[ServiceElapsed] reset: 2962, elapsed: 24170 ms, rate: 187.298/s, count: 1565, avg: 0.079, max: 1.000, min: 0.000
+[ServiceEnd2End] reset: 2962, elapsed: 24170 ms, rate: 187.298/s, count: 1565, avg: 1.966, max: 7.000, min: 0.000
+[AcquireHandlerLock] reset: 5893, elapsed: 24170 ms, rate: 369.632/s, count: 3041, avg: 0.231, max: 5.000, min: 0.000
+[RetrieveHandler] reset: 5892, elapsed: 24170 ms, rate: 369.590/s, count: 3041, avg: 0.007, max: 1.000, min: 0.000
+[ServiceResponseDelay] reset: 5892, elapsed: 24170 ms, rate: 369.549/s, count: 3040, avg: 0.587, max: 3.000, min: 0.000
+[Complete-HandleElapsed] reset: 1000, elapsed: 24170 ms, rate: 62.060/s, count: 500, avg: 2.412, max: 9.000, min: 1.000
+[Complete-ExpectedResponses] reset: 1000, elapsed: 24170 ms, rate: 62.060/s, count: 500, avg: 3.130, max: 5.000, min: 1.000
 ```

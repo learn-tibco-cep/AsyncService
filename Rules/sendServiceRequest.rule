@@ -2,7 +2,7 @@
  * @description 
  * @author Pro-Branes.local
  */
-rule Rules.sendServiceRequest {
+rule Rules.SendServiceRequest {
 	attribute {
 		priority = 5;
 		forwardChain = true;
@@ -15,8 +15,8 @@ rule Rules.sendServiceRequest {
 		evt.correlationId == handler@extId;
 	}
 	then {
-		Object logger = Log.getLogger("Rules.sendServiceRequest");
-		Log.log(logger, "info", "Received client request: %s", evt.message);
+		Object logger = Log.getLogger("Rules.SendServiceRequest");
+		Log.log(logger, "debug", "Create service request for handler '%s': %s", handler@extId, evt.message);
 		
 		// send service request
 		Events.ServiceRequest req = Events.ServiceRequest.ServiceRequest(
@@ -28,7 +28,7 @@ rule Rules.sendServiceRequest {
 			handler.expectedResponses /*expectedResponses long */);
 		Event.sendEvent(req);
 		Stats.addStat("SendServiceRequest", System.currentTimeMillis() - handler.receiptTime);
-		Log.log(logger, "debug", "Send service request '%s'; expect %d responses", handler@extId, req.expectedResponses);
+		Log.log(logger, "info", "Send service request '%s'; expect %d responses", handler@extId, req.expectedResponses);
 		
 		// cleanup event
 		Event.consumeEvent(evt);

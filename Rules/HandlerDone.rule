@@ -1,0 +1,27 @@
+/**
+ * @description 
+ * @author Pro-Branes.local
+ */
+rule Rules.HandlerDone {
+	attribute {
+		priority = 5;
+		forwardChain = true;
+	}
+	declare {
+		Concepts.Handler handler;
+		Events.HandlerExit evt;
+	}
+	when {
+		evt.correlationId == handler@extId;
+	}
+	then {
+		Object logger = Log.getLogger("Rules.HandlerDone");
+				
+		RuleFunctions.sendClientResponse(handler);
+		RuleFunctions.updateStats(handler);
+		
+		Log.log(logger, "info", "Cleanup handler '%s'", handler@extId);
+		Instance.deleteInstance(handler);
+		Event.consumeEvent(evt);
+	}
+}

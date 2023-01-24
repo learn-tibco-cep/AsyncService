@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <cluster xmlns="http://tibco.com/businessevents/configuration/6.2">
     <revision>
-        <version>121</version>
+        <version>130</version>
         <author>yxu</author>
-        <date>2023/01/18 14:35:25</date>
+        <date>2023/01/24 11:38:05</date>
         <comment/>
     </revision>
     <name>Demo</name>
@@ -87,6 +87,18 @@
                             </property>
                             <property>
                                 <name>Value</name>
+                            </property>
+                            <property>
+                                <name>LastReset</name>
+                            </property>
+                            <property>
+                                <name>StartTime</name>
+                            </property>
+                            <property>
+                                <name>PreTest</name>
+                            </property>
+                            <property>
+                                <name>LastEvent</name>
                             </property>
                         </properties>
                     </backing-store>
@@ -259,13 +271,16 @@
                 </domain-object>
                 <domain-object>
                     <mode>memory</mode>
-                    <uri>/Events/HandleTimeout</uri>
+                    <uri>/Events/HandlerExit</uri>
                     <backing-store>
                         <enabled>false</enabled>
                         <table-name/>
                         <properties>
                             <property>
                                 <name>correlationId</name>
+                            </property>
+                            <property>
+                                <name>status</name>
                             </property>
                         </properties>
                     </backing-store>
@@ -428,7 +443,8 @@
     <agent-classes>
         <inference-agent-class id="inference-class">
             <rules>
-                <uri>/Rules/sendServiceRequest</uri>
+                <uri>/Rules/SendServiceRequest</uri>
+                <uri>/Rules/HandlerDone</uri>
             </rules>
             <destinations>
                 <destination id="clientRequest_F839205">
@@ -447,13 +463,13 @@
                     <thread-affinity-rule-function/>
                     <uri>/Channels/FTLService/serviceResponse</uri>
                 </destination>
-                <destination id="handleTimeout_8C5C141">
-                    <pre-processor>/RuleFunctions/Preprocessors/onHandleTimeout</pre-processor>
+                <destination id="handlerExit_8C5C141">
+                    <pre-processor>/RuleFunctions/Preprocessors/onHandlerExit</pre-processor>
                     <queue-size/>
                     <thread-count/>
                     <threading-model>shared-queue</threading-model>
                     <thread-affinity-rule-function/>
-                    <uri>/Channels/Local/handleTimeout</uri>
+                    <uri>/Channels/Local/handlerExit</uri>
                 </destination>
             </destinations>
             <startup>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <cluster xmlns="http://tibco.com/businessevents/configuration/6.2">
     <revision>
-        <version>62</version>
+        <version>72</version>
         <author>yxu</author>
-        <date>2023/01/12 13:21:35</date>
+        <date>2023/01/24 12:28:43</date>
         <comment/>
     </revision>
     <name>Demo</name>
@@ -119,7 +119,8 @@
     <agent-classes>
         <inference-agent-class id="inference-class">
             <rules>
-                <uri>/Rules/sendServiceRequest</uri>
+                <uri>/Rules/SendServiceRequest</uri>
+                <uri>/Rules/HandlerDone</uri>
             </rules>
             <destinations>
                 <destination id="clientRequest_F839205">
@@ -138,13 +139,13 @@
                     <thread-affinity-rule-function/>
                     <uri>/Channels/FTLService/serviceResponse</uri>
                 </destination>
-                <destination id="handleTimeout_36874BD8">
-                    <pre-processor>/RuleFunctions/Preprocessors/onHandleTimeout</pre-processor>
+                <destination id="handlerExit_36874BD8">
+                    <pre-processor>/RuleFunctions/Preprocessors/onHandlerExit</pre-processor>
                     <queue-size/>
                     <thread-count/>
                     <threading-model>shared-queue</threading-model>
                     <thread-affinity-rule-function/>
-                    <uri>/Channels/Local/handleTimeout</uri>
+                    <uri>/Channels/Local/handlerExit</uri>
                 </destination>
             </destinations>
             <startup>
@@ -282,6 +283,7 @@
             <db-concepts>false</db-concepts>
             <property-group>
                 <property name="tibco.clientVar.Agent/PrintStats" value="500"/>
+                <property name="tibco.clientVar.Agent/PreTests" value="0"/>
             </property-group>
         </processing-unit>
         <processing-unit id="test">

@@ -51,6 +51,6 @@ void rulefunction RuleFunctions.sendClientResponse {
 			handler.responseTime /*responseTime long */,
 			handler.status /*status String */);
 		Event.sendEvent(resp);
-		Log.log(logger, "info", "Elapsed: %d ms; Send client response: %s", handler.responseTime-handler.receiptTime, resp@payload);
+		Log.log(logger, "info", "Handler '%s' elapsed: %d ms; Send client response: %s", handler@extId, handler.responseTime-handler.receiptTime, resp@payload);
 	}
 }

@@ -1,0 +1,46 @@
+/**
+ * @description handles state timeout in Handler state machine.
+ */
+void rulefunction RuleFunctions.Preprocessors.onHandlerExit {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Events.HandlerExit evt;
+	}
+	body {
+		Object logger = Log.getLogger("RuleFunctions.Preprocessors.onHandlerExit");
+		
+		// need to take a lock for handler state updates to avoid race condition of delayed response events
+		long startTime = System.currentTimeMillis();
+		boolean lockLocal = System.getGlobalVariableAsBoolean("Agent/LockLocal", true);
+		long lockWait = System.getGlobalVariableAsLong("Agent/LockWait", 50);
+		int lockRetry = System.getGlobalVariableAsInt("Agent/LockRetry", 3);
+		boolean locked = RuleFunctions.acquireLock(evt.correlationId, lockWait, lockRetry, lockLocal);
+		if (!locked) {
+			Stats.addStat("FailedHandlerLock", System.currentTimeMillis() - startTime);
+			Log.log(logger, "error", "Failed lock on '%s' of status: %s", evt.correlationId, evt.status);
+			Event.consumeEvent(evt);
+			return;
+		}
+		long lockTime = System.currentTimeMillis();
+		Stats.addStat("AcquireHandlerLock", lockTime - startTime);
+		
+		Concepts.Handler h;
+		if (lockLocal) {
+			// fetch handler in-memory
+			h = Instance.getByExtIdByUri(evt.correlationId, "/Concepts/Handler");
+		} else {
+			// fetch handler from cache
+			h = Cluster.DataGrid.CacheLoadConceptByExtIdByUri(evt.correlationId, true, "/Concepts/Handler");
+		}
+		Stats.addStat("RetrieveExitHandler", System.currentTimeMillis() - lockTime);
+		
+		if (h == null) {
+			// Failed to load handler.  it is an error.
+			Log.log(logger, "error", "Ignore handler timeout: Failed to load locked handler '%s'", evt.correlationId);
+			Event.consumeEvent(evt);
+			return;
+		}
+	}
+}

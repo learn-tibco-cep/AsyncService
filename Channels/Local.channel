@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <channel:Channel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:channel="http:///com/tibco/cep/designtime/core/model/service/channel" xmlns:designtime="http:///com/tibco/cep/designtime/core/model/designtime_ontology.ecore" folder="/Channels/" name="Local" description="" GUID="57413E14-034F-7431-F2CC-DDCC23791A49" ownerProjectName="AsyncService">
   <driver configMethod="REFERENCE" label="LOCAL" channel="/">
-    <destinations name="handleTimeout" description="" GUID="7D62DC34-EDEB-9C55-A4DD-F6A77C54FA4B" ownerProjectName="AsyncService" driverConfig="//@driver">
+    <destinations name="handlerExit" description="" GUID="7D62DC34-EDEB-9C55-A4DD-F6A77C54FA4B" ownerProjectName="AsyncService" driverConfig="//@driver">
       <properties>
         <properties xsi:type="designtime:SimpleProperty" name="Size" value="0"/>
         <properties xsi:type="designtime:SimpleProperty" name="TimeOut" value="-1"/>
