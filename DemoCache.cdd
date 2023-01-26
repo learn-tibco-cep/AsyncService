@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <cluster xmlns="http://tibco.com/businessevents/configuration/6.2">
     <revision>
-        <version>130</version>
+        <version>131</version>
         <author>yxu</author>
-        <date>2023/01/24 11:38:05</date>
+        <date>2023/01/26 13:25:05</date>
         <comment/>
     </revision>
     <name>Demo</name>
@@ -592,6 +592,7 @@
             </businessworks>
             <property-group>
                 <property name="be.channel.deactivate" value="/Channels/FTLClient"/>
+                <property name="be.engine.cluster.scheduler" value="false"/>
             </property-group>
         </inference-agent-class>
         <cache-agent-class id="cache-class">
@@ -623,6 +624,7 @@
                 <property name="tibco.clientVar.Agent/Optimized" value="false"/>
                 <property name="tibco.clientVar.Agent/MaxResponseCount" value="3"/>
                 <property name="tibco.clientVar.Agent/PreTests" value="4000"/>
+                <property name="tibco.clientVar.Agent/StatsIdleTime" value="60000"/>
             </property-group>
         </processing-unit>
         <processing-unit id="test">
