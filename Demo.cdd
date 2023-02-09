@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <cluster xmlns="http://tibco.com/businessevents/configuration/6.2">
     <revision>
-        <version>72</version>
+        <version>73</version>
         <author>yxu</author>
-        <date>2023/01/24 12:28:43</date>
+        <date>2023/01/26 13:47:55</date>
         <comment/>
     </revision>
     <name>Demo</name>

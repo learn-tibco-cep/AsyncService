@@ -20,6 +20,11 @@ void rulefunction TestMock.onServiceRequest {
 		long recTm = System.currentTimeMillis();
 		int bufferSize = System.getGlobalVariableAsInt("Mock/BufferSize", 0);
 		
+		long delay = System.getGlobalVariableAsLong("Mock/FirstDelay", 0);
+		if (delay > 0) {
+			Engine.sleep(delay);
+		}
+		
 		for (int i = 1; i <= size; i++) {
 			if (i > 1) {
 				if (bufferSize > 0) {
@@ -40,7 +45,7 @@ void rulefunction TestMock.onServiceRequest {
 				}
 				
 				// add random delay to reduce chance of lock contention
-				long delay = TestMock.randomDelay();
+				delay = TestMock.randomDelay();
 				if (delay > 0) {
 					Log.log(logger, "info", "Delay response %d for '%s' by %d ms", i, req.correlationId, delay);
 					Engine.sleep(delay);

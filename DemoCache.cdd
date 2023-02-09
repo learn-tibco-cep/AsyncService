@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <cluster xmlns="http://tibco.com/businessevents/configuration/6.2">
     <revision>
-        <version>131</version>
+        <version>138</version>
         <author>yxu</author>
-        <date>2023/01/26 13:25:05</date>
+        <date>2023/02/06 21:07:49</date>
         <comment/>
     </revision>
     <name>Demo</name>
@@ -13,14 +13,14 @@
         <class>com.tibco.cep.ignite.cluster.IgniteClusterProvider</class>
         <properties>
             <property name="discovery-url" value="%%Ignite/DiscoveryURL%%"/>
-            <property name="listen-port" value="47500..47510"/>
-            <property name="communication-port" value="47100..47110"/>
+            <property name="listen-port" value="%%Ignite/ListenPort%%"/>
+            <property name="communication-port" value="%%Ignite/CommunicationPort%%"/>
             <property name="socket-write-timeout" value="30000"/>
             <property name="connect-timeout" value="30000"/>
             <property name="join-timeout" value="30000"/>
             <property name="network-timeout" value="30000"/>
             <property name="failure-detection-timeout" value="30000"/>
-            <property name="hostaware-enable" value="true"/>
+            <property name="hostaware-enable" value="false"/>
             <property name="hostaware-hostname" value="%%Ignite/HostName%%"/>
         </properties>
         <security enabled="false">
@@ -34,8 +34,8 @@
             <type>Ignite</type>
             <class>com.tibco.cep.ignite.store.IgniteStoreProvider</class>
             <properties>
-                <property name="cache-agent-quorum" value="1"/>
-                <property name="backup-copies" value="0"/>
+                <property name="cache-agent-quorum" value="%%Ignite/Quorum%%"/>
+                <property name="backup-copies" value="%%Ignite/BackupCopies%%"/>
                 <property name="listen-port" value="47500..47510"/>
                 <property name="communication-port" value="47100..47110"/>
                 <property name="socket-write-timeout" value="30000"/>
@@ -664,6 +664,7 @@
                 <property name="tibco.clientVar.Mock/MinWait" value="30"/>
                 <property name="tibco.clientVar.Mock/MaxWait" value="70"/>
                 <property name="tibco.clientVar.Mock/BufferSize" value="0"/>
+                <property name="tibco.clientVar.Mock/FirstDelay" value="15"/>
             </property-group>
         </processing-unit>
         <processing-unit id="cache">
@@ -701,5 +702,7 @@
         <property name="tibco.clientVar.FTL/Server_URL" value="http://localhost:8585"/>
         <property name="tibco.clientVar.Ignite/DiscoveryURL" value="localhost:47500..47510"/>
         <property name="tibco.clientVar.Ignite/HostName" value="localhost"/>
+        <property name="tibco.clientVar.Ignite/BackupCopies" value="0"/>
+        <property name="tibco.clientVar.Ignite/Quorum" value="1"/>
     </property-group>
 </cluster>

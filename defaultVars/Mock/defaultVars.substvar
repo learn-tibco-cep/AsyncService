@@ -41,5 +41,15 @@
             <constraint/>
             <modTime>1673580367860</modTime>
         </globalVariable>
+        <globalVariable>
+            <name>FirstDelay</name>
+            <value>0</value>
+            <type>Integer</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1675731091232</modTime>
+        </globalVariable>
     </globalVariables>
 </repository>

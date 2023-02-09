@@ -21,5 +21,45 @@
             <constraint/>
             <modTime>1673976818989</modTime>
         </globalVariable>
+        <globalVariable>
+            <name>Quorum</name>
+            <value>1</value>
+            <type>Integer</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1675730412847</modTime>
+        </globalVariable>
+        <globalVariable>
+            <name>BackupCopies</name>
+            <value>0</value>
+            <type>Integer</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1675730440391</modTime>
+        </globalVariable>
+        <globalVariable>
+            <name>ListenPort</name>
+            <value>47500..47510</value>
+            <type>String</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1675742694635</modTime>
+        </globalVariable>
+        <globalVariable>
+            <name>CommunicationPort</name>
+            <value>47100..47110</value>
+            <type>String</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1675742774848</modTime>
+        </globalVariable>
     </globalVariables>
 </repository>
