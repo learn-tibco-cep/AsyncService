@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <cluster xmlns="http://tibco.com/businessevents/configuration/6.2">
     <revision>
-        <version>73</version>
+        <version>74</version>
         <author>yxu</author>
-        <date>2023/01/26 13:47:55</date>
+        <date>2023/05/19 13:05:41</date>
         <comment/>
     </revision>
     <name>Demo</name>
@@ -336,5 +336,6 @@
             <property name="be.mm.auth.file.location" value="/Users/yxu/tibco/be6/be/6.2/mm/config/users.pwd"/>
             <property name="java.security.auth.login.config" value="/Users/yxu/tibco/be6/be/6.2/mm/config/jaas-config.config"/>
         </property-group>
+        <property name="tibco.clientVar.FTL/Server_URL" value="http://localhost:8585"/>
     </property-group>
 </cluster>

@@ -1,0 +1,11 @@
+globals:
+  core.servers:
+    ftls1: localhost:8585
+services:
+  realm:
+    user: primary
+    password: primary-pw
+servers:
+  ftls1:
+  - realm:
+      data: /ftl-server/ftls1

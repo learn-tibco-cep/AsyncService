@@ -1,0 +1,7 @@
+#!/bin/sh
+TIBDG_ROOT=/opt/tibco/as/4.8
+BE_HOME=$HOME/tibco/be6/be/6.2
+
+$TIBDG_ROOT/bin/tibdg -r http://localhost:8383 -g demo -s $BE_HOME/bin/create_tables_as.tibdg
+$TIBDG_ROOT/bin/tibdg --http-timeout 60 -r http://localhost:8383 -g demo -s ./schema/demo.tibdg
+$TIBDG_ROOT/bin/tibdg -r http://localhost:8383 -g demo table list

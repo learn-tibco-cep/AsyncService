@@ -1,0 +1,2 @@
+#!/bin/sh
+tibftladmin -rs http://localhost:8585 -st

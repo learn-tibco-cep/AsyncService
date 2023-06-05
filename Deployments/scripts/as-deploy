@@ -1,0 +1,7 @@
+#!/bin/sh
+#
+# generate db deploy scripts
+CDD=../DemoAS4.cdd
+BE_HOME=$HOME/tibco/be6/be/6.2
+$BE_HOME/bin/be-storedeploy --propFile $BE_HOME/bin/be-storedeploy.tra -o ./schema/demo -c $CDD -s ACTIVESPACES ../Demo.ear
+

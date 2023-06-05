@@ -1,0 +1,25 @@
+#!/bin/sh
+#
+# start test engine
+# ./start [default|test|mock]
+CDD=DemoAS4.cdd
+PU=$1
+if  [ -z "$1" ]; then
+  PU=default
+fi
+echo "start PU $PU"
+
+ENG=$PU
+if [ "$ENG" = "default" ]; then
+  SEQ=$2
+  if [ -z "$2" ]; then
+    SEQ=0
+  fi
+  ENG="${PU}-${SEQ}"
+  echo "engine name $ENG"
+else
+  CDD=Demo.cdd
+fi
+
+BE_HOME=$HOME/tibco/be6/be/6.2
+$BE_HOME/bin/be-engine --propFile $BE_HOME/bin/be-engine.tra -n $ENG -u $PU -c ../$CDD ../Demo.ear

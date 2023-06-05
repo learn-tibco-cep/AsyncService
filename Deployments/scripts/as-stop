@@ -1,0 +1,5 @@
+#!/bin/bash
+TIBDG_ROOT=/opt/tibco/as/4.8
+cd $TIBDG_ROOT/samples/scripts
+./as-stop -r localhost:8383 -g demo 
+./as-stop -r localhost:8383

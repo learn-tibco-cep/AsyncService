@@ -33,13 +33,13 @@
         </globalVariable>
         <globalVariable>
             <name>PrintStats</name>
-            <value>500</value>
+            <value>100</value>
             <type>Integer</type>
             <deploymentSettable>true</deploymentSettable>
             <serviceSettable>false</serviceSettable>
             <description/>
             <constraint/>
-            <modTime>1673554794777</modTime>
+            <modTime>1684511187592</modTime>
         </globalVariable>
         <globalVariable>
             <name>ResetStats</name>

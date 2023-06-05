@@ -1,0 +1,3 @@
+#!/bin/bash
+TIBDG_ROOT=/opt/tibco/as/4.8
+$TIBDG_ROOT/bin/tibdg -r http://localhost:8383 -g demo status

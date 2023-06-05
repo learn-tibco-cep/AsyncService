@@ -1,0 +1,5 @@
+#!/bin/bash
+TIBDG_ROOT=/opt/tibco/as/4.8
+WS=$PWD
+cd $TIBDG_ROOT/samples/scripts
+./as-start -r localhost:8383 -d $WS/data -g demo

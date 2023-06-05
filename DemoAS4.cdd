@@ -1,71 +1,50 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <cluster xmlns="http://tibco.com/businessevents/configuration/6.2">
     <revision>
-        <version>140</version>
+        <version>147</version>
         <author>yxu</author>
-        <date>2023/05/19 10:00:02</date>
+        <date>2023/05/19 12:35:45</date>
         <comment/>
     </revision>
-    <name>DemoCache</name>
+    <name>DemoAS4</name>
     <message-encoding>UTF-8</message-encoding>
     <provider>
-        <type>Ignite</type>
-        <class>com.tibco.cep.ignite.cluster.IgniteClusterProvider</class>
+        <type>FTL</type>
+        <class>com.tibco.cep.ftl.cluster.impl.FTLClusterProvider</class>
         <properties>
-            <property name="discovery-url" value="%%Ignite/DiscoveryURL%%"/>
-            <property name="listen-port" value="%%Ignite/ListenPort%%"/>
-            <property name="communication-port" value="%%Ignite/CommunicationPort%%"/>
-            <property name="socket-write-timeout" value="30000"/>
-            <property name="connect-timeout" value="30000"/>
-            <property name="join-timeout" value="30000"/>
-            <property name="network-timeout" value="30000"/>
-            <property name="failure-detection-timeout" value="30000"/>
-            <property name="hostaware-enable" value="false"/>
-            <property name="hostaware-hostname" value="%%Ignite/HostName%%"/>
+            <property name="realmUrl" value="%%FTL/Server_URL%%"/>
+            <property name="clusterName" value="ftl.default.cluster"/>
         </properties>
         <security enabled="false">
-            <property name="ssl.trusted.certificate.folder.path" value=""/>
-            <property name="ssl.identity.file.path" value=""/>
-            <property name="ssl.trusted.store.password" value=""/>
+            <property name="userName" value=""/>
+            <property name="password" value=""/>
+            <property name="trustType" value=""/>
+            <property name="trustFile" value=""/>
+            <property name="trustPEMString" value=""/>
         </security>
     </provider>
     <object-management>
-        <cache-manager>
-            <type>Ignite</type>
-            <class>com.tibco.cep.ignite.store.IgniteStoreProvider</class>
+        <store-manager>
+            <type>ActiveSpaces</type>
+            <class>com.tibco.be.as.store.ActiveSpacesStoreProvider</class>
             <properties>
-                <property name="cache-agent-quorum" value="%%Ignite/Quorum%%"/>
-                <property name="backup-copies" value="%%Ignite/BackupCopies%%"/>
-                <property name="listen-port" value="47500..47510"/>
-                <property name="communication-port" value="47100..47110"/>
-                <property name="socket-write-timeout" value="30000"/>
-                <property name="connect-timeout" value="30000"/>
-                <property name="join-timeout" value="30000"/>
-                <property name="network-timeout" value="30000"/>
-                <property name="failure-detection-timeout" value="30000"/>
-                <property name="hostaware-enable" value="true"/>
-                <property name="hostaware-hostname" value="localhost"/>
-                <property name="encryption-enable" value="false"/>
-                <property name="encryption.identity.file.path" value=""/>
-                <property name="read-from-backup" value="false"/>
+                <property name="realmUrl" value="%%AS/RealmURL%%"/>
+                <property name="gridName" value="%%AS/GridName%%"/>
+                <property name="com.tibco.tibdg.timeout" value="5"/>
+                <property name="com.tibco.tibdg.connectwaittime" value="0.1"/>
+                <property name="connPoolSize" value="10"/>
+                <property name="userName" value=""/>
+                <property name="password" value=""/>
             </properties>
             <security enabled="false">
-                <property name="ssl.trusted.certificate.folder.path" value=""/>
-                <property name="ssl.identity.file.path" value=""/>
-                <property name="ssl.trusted.store.password" value=""/>
+                <property name="com.tibco.tibdg.trust.type" value="trust_file"/>
+                <property name="com.tibco.tibdg.trust.file" value=""/>
             </security>
             <domain-objects>
-                <default-mode>cache</default-mode>
+                <default-mode>store</default-mode>
                 <check-for-version>true</check-for-version>
-                <evict-on-update>false</evict-on-update>
-                <cache-limited>false</cache-limited>
                 <subscribe>false</subscribe>
-                <pre-load-enabled>true</pre-load-enabled>
-                <pre-load-fetch-size>0</pre-load-fetch-size>
-                <pre-load-handles>false</pre-load-handles>
                 <concept-ttl>-1</concept-ttl>
-                <entity-cache-size>50</entity-cache-size>
-                <object-table-cache-size>200</object-table-cache-size>
                 <domain-object>
                     <mode>memory</mode>
                     <uri>/Stats/Config</uri>
@@ -99,104 +78,6 @@
                             </property>
                             <property>
                                 <name>LastEvent</name>
-                            </property>
-                        </properties>
-                    </backing-store>
-                    <keys>
-                        <key/>
-                    </keys>
-                    <indexes>
-                        <index/>
-                    </indexes>
-                    <encryption/>
-                    <composite-indexes/>
-                </domain-object>
-                <domain-object>
-                    <mode>memory</mode>
-                    <uri>/TestDriver/RequestTimer</uri>
-                    <backing-store>
-                        <enabled>false</enabled>
-                        <table-name/>
-                        <properties/>
-                    </backing-store>
-                    <keys>
-                        <key/>
-                    </keys>
-                    <indexes>
-                        <index/>
-                    </indexes>
-                    <encryption/>
-                    <composite-indexes/>
-                </domain-object>
-                <domain-object>
-                    <mode>memory</mode>
-                    <uri>/TestDriver/Dispatch</uri>
-                    <backing-store>
-                        <enabled>false</enabled>
-                        <table-name/>
-                        <properties>
-                            <property>
-                                <name>publisher</name>
-                            </property>
-                        </properties>
-                    </backing-store>
-                    <keys>
-                        <key/>
-                    </keys>
-                    <indexes>
-                        <index/>
-                    </indexes>
-                    <encryption/>
-                    <composite-indexes/>
-                </domain-object>
-                <domain-object>
-                    <mode>memory</mode>
-                    <uri>/Events/ServiceRequest</uri>
-                    <backing-store>
-                        <enabled>false</enabled>
-                        <table-name/>
-                        <properties>
-                            <property>
-                                <name>correlationId</name>
-                            </property>
-                            <property>
-                                <name>message</name>
-                            </property>
-                            <property>
-                                <name>requestTime</name>
-                            </property>
-                            <property>
-                                <name>expectedResponses</name>
-                            </property>
-                        </properties>
-                    </backing-store>
-                    <keys>
-                        <key/>
-                    </keys>
-                    <indexes>
-                        <index/>
-                    </indexes>
-                    <encryption/>
-                    <composite-indexes/>
-                </domain-object>
-                <domain-object>
-                    <mode>memory</mode>
-                    <uri>/Events/ServiceResponse</uri>
-                    <backing-store>
-                        <enabled>false</enabled>
-                        <table-name/>
-                        <properties>
-                            <property>
-                                <name>correlationId</name>
-                            </property>
-                            <property>
-                                <name>response</name>
-                            </property>
-                            <property>
-                                <name>receiptTime</name>
-                            </property>
-                            <property>
-                                <name>responseTime</name>
                             </property>
                         </properties>
                     </backing-store>
@@ -295,6 +176,104 @@
                 </domain-object>
                 <domain-object>
                     <mode>memory</mode>
+                    <uri>/Events/ServiceRequest</uri>
+                    <backing-store>
+                        <enabled>false</enabled>
+                        <table-name/>
+                        <properties>
+                            <property>
+                                <name>correlationId</name>
+                            </property>
+                            <property>
+                                <name>message</name>
+                            </property>
+                            <property>
+                                <name>requestTime</name>
+                            </property>
+                            <property>
+                                <name>expectedResponses</name>
+                            </property>
+                        </properties>
+                    </backing-store>
+                    <keys>
+                        <key/>
+                    </keys>
+                    <indexes>
+                        <index/>
+                    </indexes>
+                    <encryption/>
+                    <composite-indexes/>
+                </domain-object>
+                <domain-object>
+                    <mode>memory</mode>
+                    <uri>/Events/ServiceResponse</uri>
+                    <backing-store>
+                        <enabled>false</enabled>
+                        <table-name/>
+                        <properties>
+                            <property>
+                                <name>correlationId</name>
+                            </property>
+                            <property>
+                                <name>response</name>
+                            </property>
+                            <property>
+                                <name>receiptTime</name>
+                            </property>
+                            <property>
+                                <name>responseTime</name>
+                            </property>
+                        </properties>
+                    </backing-store>
+                    <keys>
+                        <key/>
+                    </keys>
+                    <indexes>
+                        <index/>
+                    </indexes>
+                    <encryption/>
+                    <composite-indexes/>
+                </domain-object>
+                <domain-object>
+                    <mode>memory</mode>
+                    <uri>/TestDriver/Dispatch</uri>
+                    <backing-store>
+                        <enabled>false</enabled>
+                        <table-name/>
+                        <properties>
+                            <property>
+                                <name>publisher</name>
+                            </property>
+                        </properties>
+                    </backing-store>
+                    <keys>
+                        <key/>
+                    </keys>
+                    <indexes>
+                        <index/>
+                    </indexes>
+                    <encryption/>
+                    <composite-indexes/>
+                </domain-object>
+                <domain-object>
+                    <mode>memory</mode>
+                    <uri>/TestDriver/RequestTimer</uri>
+                    <backing-store>
+                        <enabled>false</enabled>
+                        <table-name/>
+                        <properties/>
+                    </backing-store>
+                    <keys>
+                        <key/>
+                    </keys>
+                    <indexes>
+                        <index/>
+                    </indexes>
+                    <encryption/>
+                    <composite-indexes/>
+                </domain-object>
+                <domain-object>
+                    <mode>memory</mode>
                     <uri>/TestMock/BufferedRequest</uri>
                     <backing-store>
                         <enabled>false</enabled>
@@ -318,23 +297,7 @@
                     <composite-indexes/>
                 </domain-object>
             </domain-objects>
-            <backing-store>
-                <persistence-option>None</persistence-option>
-                <type>Oracle</type>
-                <properties>
-                    <property name="strategy" value="JDBC"/>
-                    <property name="persistence-policy" value="ASYNC"/>
-                    <property name="cache-aside" value="true"/>
-                    <property name="enforce-pools" value="true"/>
-                </properties>
-                <primary-connection>
-                    <uri/>
-                    <initial-size>10</initial-size>
-                    <max-size>10</max-size>
-                    <min-size>10</min-size>
-                </primary-connection>
-            </backing-store>
-        </cache-manager>
+        </store-manager>
         <db-concepts>
             <db-uris/>
             <check-interval>60</check-interval>
@@ -595,11 +558,6 @@
                 <property name="be.engine.cluster.scheduler" value="false"/>
             </property-group>
         </inference-agent-class>
-        <cache-agent-class id="cache-class">
-            <property-group>
-                <property name="be.engine.cacheServer.channel.disable" value="true"/>
-            </property-group>
-        </cache-agent-class>
     </agent-classes>
     <processing-units>
         <processing-unit id="default">
@@ -667,20 +625,6 @@
                 <property name="tibco.clientVar.Mock/FirstDelay" value="15"/>
             </property-group>
         </processing-unit>
-        <processing-unit id="cache">
-            <agents>
-                <agent>
-                    <ref>cache-class</ref>
-                    <key/>
-                    <priority/>
-                </agent>
-            </agents>
-            <logs>logConfig</logs>
-            <hot-deploy>false</hot-deploy>
-            <cache-storage-enabled>true</cache-storage-enabled>
-            <db-concepts>false</db-concepts>
-            <property-group/>
-        </processing-unit>
     </processing-units>
     <load-balancer-configs>
         <pair-configs/>
@@ -700,9 +644,7 @@
             <property name="java.security.auth.login.config" value="/Users/yxu/tibco/be6/be/6.2/mm/config/jaas-config.config"/>
         </property-group>
         <property name="tibco.clientVar.FTL/Server_URL" value="http://localhost:8585"/>
-        <property name="tibco.clientVar.Ignite/DiscoveryURL" value="localhost:47500..47510"/>
-        <property name="tibco.clientVar.Ignite/HostName" value="localhost"/>
-        <property name="tibco.clientVar.Ignite/BackupCopies" value="0"/>
-        <property name="tibco.clientVar.Ignite/Quorum" value="1"/>
+        <property name="tibco.clientVar.AS/RealmURL" value="http://localhost:8383"/>
+        <property name="tibco.clientVar.AS/GridName" value="demo"/>
     </property-group>
 </cluster>

@@ -1,0 +1,2 @@
+#!/bin/sh
+tibftlserver -n ftls1 -c ./ftl.yaml > ~/ftl-server/ftls1/ftls1.log 2>&1 &

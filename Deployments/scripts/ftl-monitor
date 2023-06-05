@@ -1,0 +1,17 @@
+#!/bin/sh
+#
+# start test engine
+# ./ftl-monitor [ftl|as] [start|stop]
+PORT=8585
+if [ "$1" = "as" ]; then
+  PORT=8383
+fi
+echo "mointor FTL on port $PORT"
+
+FTL_HOME=/opt/tibco/ftl/6.8
+cd $FTL_HOME/monitoring
+if [ "$2" = "stop" ]; then
+  sudo ./monitor-stop.py
+else
+  sudo ./monitor-start.py -f localhost:$PORT
+fi
